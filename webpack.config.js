@@ -7,7 +7,13 @@ module.exports = {
 		filename:"bundle.js"
 	},
 	module:{
-		test:/\.js|jsx$/,
-		loader:'jsx?harmony'
+		loaders:[{
+			test:/\.js|jsx$/,
+			//loader:'jsx?harmony'
+			loader:'jsx'
+		},{
+			test:/\.css$/,
+			loaders:['style','css']
+		}]
 	}
 }

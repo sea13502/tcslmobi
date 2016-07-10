@@ -1,0 +1,28 @@
+body{
+    background:pink;
+    margin: 0;
+}
+.left{
+	background: yellow;
+    display: inline-block;
+    width: 30%;
+    vertical-align: top;
+    overflow: scroll;
+}
+.right{
+	background: blue;
+    display: inline-block;
+    width: 70%;
+    vertical-align: top;
+    overflow: scroll;
+}
+.dishGroupName{
+	background:red;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+*::-webkit-scrollbar  
+{  
+    width: 0px;  
+    height: 0px;  
+    background-color: red;  
+}  

@@ -1,0 +1,6 @@
+- 压缩问题，sourcemap问题
+- router问题
+- 是不是要考虑下别的flux框架
+- 引入amazeui
+- 熟悉flux的架构
+- webpack的shim 问题
