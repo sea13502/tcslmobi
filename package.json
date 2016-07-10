@@ -15,8 +15,6 @@
     "jsx-loader": "^0.13.2",
     "object-assign": "^4.1.0",
     "path": "^0.12.7",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0",
     "style-loader": "^0.13.1"
   }
 }
