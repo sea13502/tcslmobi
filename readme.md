@@ -4,3 +4,6 @@
 - 引入amazeui
 - 熟悉flux的架构
 - webpack的shim 问题
+- webpack-dev-server
+- webpack-hot-loader
+- flexbox

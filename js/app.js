@@ -1,7 +1,7 @@
 var React = require( "react" );
 var ReactDom = require( "react-dom" );
-var BaseComponent = require( "./components/BaseComponent.js" );
+var routes = require( "../routes.js" );
 var css = require( "../css/text.css" );
 
-ReactDom.render(<BaseComponent />,
+ReactDom.render(routes,
 	document.getElementById("container"));
