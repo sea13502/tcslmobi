@@ -5,6 +5,8 @@ module.exports = {
 	output:{
 		path:path.join( __dirname,"js" ),
 		filename:"bundle.js"
+		,
+		libraryTarget: "umd"
 	},
 	module:{
 		loaders:[{
@@ -16,4 +18,20 @@ module.exports = {
 			loaders:['style','css']
 		}]
 	}
+	,
+	externals:{
+		"react":"React",
+		"react-dom":"ReactDOM",
+		'amazeui-touch': 'AMUITouch',
+  		'react-addons-css-transition-group':
+    	['React', 'addons', 'CSSTransitionGroup']
+	}
+	// ,
+	// resolve: {
+	//     alias: {
+	//         "react": "react/dist/react.min.js"
+	//         ,
+	//         "react_dom":"react-dom/dist/react-dom.min.js"
+	//     }
+	// }
 }

@@ -1,6 +1,9 @@
 var React = require( "react" );
 var DishStore = require( "../stores/DishStore.js" );
 
+var AMUITouch = require("amazeui-touch");
+var ButtonAm = AMUITouch.Button;
+
 var BaseComponent = React.createClass({
 
 	getInitialState:function(){
@@ -33,6 +36,11 @@ var BaseComponent = React.createClass({
 				dishInClass.push(
 					<div> { allDish[i].items[j].name }
 						<div>22</div><div>22</div> <div>22</div>
+						<div>
+							<ButtonAm>
+								hello
+							</ButtonAm>
+						</div>
 					</div>
 				);
 			}
