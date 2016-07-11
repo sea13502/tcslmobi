@@ -57,7 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var ReactDom = __webpack_require__( 2 );
 	var routes = __webpack_require__( 3 );
-	var css = __webpack_require__( 76 );
+	var css = __webpack_require__( 78 );
 
 	ReactDom.render(routes,
 		document.getElementById("container"));
@@ -80,13 +80,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Router = __webpack_require__( 4 ).Router;
 	var Route = __webpack_require__( 4 ).Route;
+	var IndexRoute = __webpack_require__( 4 ).IndexRoute;
 	var hashHistory = __webpack_require__( 4 ).hashHistory;
 
 	var BaseComponent = __webpack_require__( 67 );
+	var RootApp = __webpack_require__( 76 );
+	var Home = __webpack_require__( 77 );
+
 
 	var routes = (
 		React.createElement(Router, {history:  hashHistory }, 
-			React.createElement(Route, {path: "/aaass", component:  BaseComponent })
+			React.createElement(Route, {path: "/", component:  RootApp }, 
+				React.createElement(IndexRoute, {component:  Home }), 
+				React.createElement(Route, {path: "/diancai", component:  BaseComponent })
+			)
 		)
 	);
 
@@ -6606,13 +6613,87 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var React = __webpack_require__( 1 );
+	var Container = __webpack_require__( 75 ).Container;
+
+	var RootAppComponent = React.createClass({displayName: "RootAppComponent",
+		render:function(){
+			return (
+				React.createElement("div", {
+	          		transition: "rfr"
+	        	}, 
+					 this.props.children
+				)	
+			)
+		}
+	});
+
+	module.exports = RootAppComponent;
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__( 1 );
+	var Link = __webpack_require__( 4 ).Link;
+
+	var Container = __webpack_require__( 75 ).Container;
+	var List = __webpack_require__( 75 ).List;
+	var NavBar = __webpack_require__( 75 ).NavBar;
+	var Group = __webpack_require__( 75 ).Group;
+	var View = __webpack_require__( 75 ).View;
+
+	var pages = [
+		"diancai"
+	];
+
+	var HomeComponent = React.createClass({displayName: "HomeComponent",
+		render:function(){
+			var items = pages.map(function( item,i ){
+				return(
+					React.createElement(List.Item, {
+			          linkComponent: Link, 
+			          linkProps: {to: '/' + item.toLowerCase()}, 
+			          title: item, 
+			          key: i}
+			        )
+				)
+			});
+
+			return (
+				React.createElement(View, {id: "app-index"}, 
+			        React.createElement(NavBar, {
+			          amStyle: "primary", 
+			          title: "Amaze UI Touch"}
+			        ), 
+			        React.createElement(Container, {scrollable: true}, 
+			          React.createElement(Group, {
+			            header: "Amaze UI Touch Components", 
+			            noPadded: true
+			          }, 
+			            React.createElement(List, null, 
+			              items
+			            )
+			          )
+			        )
+			    )
+			)
+		}
+	});
+
+	module.exports = HomeComponent;
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(77);
+	var content = __webpack_require__(79);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(79)(content, {});
+	var update = __webpack_require__(81)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -6629,10 +6710,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(78)();
+	exports = module.exports = __webpack_require__(80)();
 	// imports
 
 
@@ -6643,7 +6724,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports) {
 
 	/*
@@ -6699,7 +6780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

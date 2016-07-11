@@ -7,3 +7,4 @@
 - webpack-dev-server
 - webpack-hot-loader
 - flexbox
+- 在oschina上做一个D1项目的仓库私密的
