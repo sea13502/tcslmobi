@@ -57,7 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var ReactDom = __webpack_require__( 2 );
 	var routes = __webpack_require__( 3 );
-	var css = __webpack_require__( 78 );
+	var css = __webpack_require__( 83 );
 
 	ReactDom.render(routes,
 		document.getElementById("container"));
@@ -82,18 +82,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Route = __webpack_require__( 4 ).Route;
 	var IndexRoute = __webpack_require__( 4 ).IndexRoute;
 	var hashHistory = __webpack_require__( 4 ).hashHistory;
-	var browserHistory = __webpack_require__( 4 ).browserHistory;
 
 	var BaseComponent = __webpack_require__( 67 );
-	var RootApp = __webpack_require__( 76 );
-	var Home = __webpack_require__( 77 );
+	var RootApp = __webpack_require__( 79 );
+	var LianxiComponent = __webpack_require__( 80 );
+	var Home = __webpack_require__( 82 );
 
 
 	var routes = (
 		React.createElement(Router, {history:  hashHistory }, 
 			React.createElement(Route, {path: "/", component:  RootApp }, 
 				React.createElement(IndexRoute, {component:  Home }), 
-				React.createElement(Route, {path: "/diancai", component:  BaseComponent })
+				React.createElement(Route, {path: "/diancai", component:  BaseComponent }), 
+				React.createElement(Route, {path: ":lianxi", component:  LianxiComponent })
 			)
 		)
 	);
@@ -5787,10 +5788,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DishStore = __webpack_require__( 68 );
 
 	var Container = __webpack_require__( 75 ).Container;
+	var Group = __webpack_require__( 75 ).Group;
+	var Grid = __webpack_require__( 75 ).Grid;
+	var Col = __webpack_require__( 75 ).Col;
 	var View = __webpack_require__( 75 ).View;
 
-	var AMUITouch = __webpack_require__(75);
-	var ButtonAm = AMUITouch.Button;
+	var BackButton = __webpack_require__( 76 );
+	var DishCell = __webpack_require__( 77 );
+	var DishclassCell = __webpack_require__( 78 );
 
 	var BaseComponent = React.createClass({displayName: "BaseComponent",
 
@@ -5816,20 +5821,11 @@ return /******/ (function(modules) { // webpackBootstrap
 				);
 				var dishInClass = [];
 				dishInClass.push(
-					React.createElement("div", {className: "dishGroupName"}, 
-						 allDish[i].name
-					)
+					React.createElement(DishclassCell, {data:  allDish[i] })
 				);
 				for( var j = 0 ; j < allDish[i].items.length ; j++ ){
 					dishInClass.push(
-						React.createElement("div", null, " ",  allDish[i].items[j].name, 
-							React.createElement("div", null, "22"), React.createElement("div", null, "22"), " ", React.createElement("div", null, "22"), 
-							React.createElement("div", null, 
-								React.createElement(ButtonAm, null, 
-									"hello"
-								)
-							)
-						)
+						React.createElement(DishCell, {data:  allDish[i].items[j] })
 					);
 				}
 				allDishArr.push( dishInClass );
@@ -5839,10 +5835,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return(
 				React.createElement(View, {id: "diancaican"}, 
-					React.createElement(Container, {id: "leftbox", className: "left"}, 
-						 allDishClassArr 
+					React.createElement(Container, {id: "leftbox", scrollable: true, className: "left"}, 
+						 allDishClassArr, 
+						React.createElement(BackButton, null)
 					), 
-					React.createElement(Container, {id: "rightbox", className: "right"}, 
+					React.createElement(Container, {id: "rightbox", scrollable: true, className: "right"}, 
 						 allDishArr 
 					)
 				)
@@ -6618,6 +6615,67 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
+	var Button = __webpack_require__( 75 ).Button;
+
+	var Link = __webpack_require__( 4 ).Link;
+
+	var BackButton = React.createClass({displayName: "BackButton",
+		render:function(){
+			return(
+				React.createElement(Button, null, 
+					React.createElement(Link, {to: "/"}, "返回")
+				)
+			)
+		}
+	});
+
+	module.exports = BackButton;
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+
+	var DishCell = React.createClass({displayName: "DishCell",
+		render:function(){
+			var data = this.props.data;
+
+			return(
+				React.createElement("div", null, 
+					 data.name
+				)
+			)
+		}
+	});
+
+	module.exports = DishCell;
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+
+	var DishclassCell = React.createClass({displayName: "DishclassCell",
+		render:function(){
+			var data = this.props.data;
+
+			return(
+				React.createElement("div", {className: "dishGroupName"}, 
+						 data.name
+				)
+			)
+		}
+	});
+
+	module.exports = DishclassCell;
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__( 1 );
 	var Container = __webpack_require__( 75 ).Container;
 
 	var RootAppComponent = React.createClass({displayName: "RootAppComponent",
@@ -6637,7 +6695,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RootAppComponent;
 
 /***/ },
-/* 77 */
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__( 1 );
+	var View = __webpack_require__( 75 ).View;
+	//var pages = require( "../components/*" );
+	var pages = {};
+	pages["lianxi"] = __webpack_require__( 81 );
+
+	var LianxiComponent = React.createClass({displayName: "LianxiComponent",
+
+		render:function(){
+
+			var component = this.props.params.lianxi;
+
+			var Comp = pages[ component ];
+
+			return (
+				React.createElement(View, null, 
+					React.createElement(Comp, null)
+				)
+			)
+		}
+	});
+
+	module.exports = LianxiComponent;
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__( 1 );
+	var BackButton = __webpack_require__( 76 );
+
+	var LianxisonComponent = React.createClass({displayName: "LianxisonComponent",
+		render:function(){
+			return (
+				React.createElement("div", null, 
+					"hello i am son", 
+					React.createElement(BackButton, null)
+				)
+			)
+		}
+	});
+
+	module.exports = LianxisonComponent;
+
+/***/ },
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
@@ -6650,7 +6756,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var View = __webpack_require__( 75 ).View;
 
 	var pages = [
-		"diancai"
+		"diancai","lianxi"
 	];
 
 	var HomeComponent = React.createClass({displayName: "HomeComponent",
@@ -6696,16 +6802,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = HomeComponent;
 
 /***/ },
-/* 78 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(79);
+	var content = __webpack_require__(84);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(81)(content, {});
+	var update = __webpack_require__(86)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -6722,10 +6828,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 79 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(80)();
+	exports = module.exports = __webpack_require__(85)();
 	// imports
 
 
@@ -6736,7 +6842,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 80 */
+/* 85 */
 /***/ function(module, exports) {
 
 	/*
@@ -6792,7 +6898,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 81 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

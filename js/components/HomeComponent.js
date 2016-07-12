@@ -8,7 +8,7 @@ var Group = require( "amazeui-touch" ).Group;
 var View = require( "amazeui-touch" ).View;
 
 var pages = [
-	"diancai"
+	"diancai","lianxi"
 ];
 
 var HomeComponent = React.createClass({

@@ -2,10 +2,14 @@ var React = require( "react" );
 var DishStore = require( "../stores/DishStore.js" );
 
 var Container = require( "amazeui-touch" ).Container;
+var Group = require( "amazeui-touch" ).Group;
+var Grid = require( "amazeui-touch" ).Grid;
+var Col = require( "amazeui-touch" ).Col;
 var View = require( "amazeui-touch" ).View;
 
-var AMUITouch = require("amazeui-touch");
-var ButtonAm = AMUITouch.Button;
+var BackButton = require( "../components/BackButton.js" );
+var DishCell = require( "../components/dish/DishCell.js" );
+var DishclassCell = require( "../components/dish/DishclassCell.js" );
 
 var BaseComponent = React.createClass({
 
@@ -31,20 +35,11 @@ var BaseComponent = React.createClass({
 			);
 			var dishInClass = [];
 			dishInClass.push(
-				<div className="dishGroupName">
-					{ allDish[i].name }
-				</div>
+				<DishclassCell data={ allDish[i] }/>
 			);
 			for( var j = 0 ; j < allDish[i].items.length ; j++ ){
 				dishInClass.push(
-					<div> { allDish[i].items[j].name }
-						<div>22</div><div>22</div> <div>22</div>
-						<div>
-							<ButtonAm>
-								hello
-							</ButtonAm>
-						</div>
-					</div>
+					<DishCell data={ allDish[i].items[j] }/>
 				);
 			}
 			allDishArr.push( dishInClass );
@@ -54,10 +49,11 @@ var BaseComponent = React.createClass({
 
 		return(
 			<View id="diancaican">
-				<Container id="leftbox" className="left">
+				<Container id="leftbox" scrollable className="left">
 					{ allDishClassArr }
+					<BackButton />
 				</Container>
-				<Container id="rightbox" className="right">
+				<Container id="rightbox" scrollable className="right">
 					{ allDishArr }
 				</Container>
 			</View>
