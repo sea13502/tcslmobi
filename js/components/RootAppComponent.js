@@ -3,12 +3,14 @@ var Container = require( "amazeui-touch" ).Container;
 
 var RootAppComponent = React.createClass({
 	render:function(){
+		var transition = 'sfr';
 		return (
-			<div
-          		transition='rfr'
-        	>
-				{ this.props.children }
-			</div>	
+			<Container>
+				<Container transition={ transition }>
+					{React.cloneElement(this.props.children, {key: this.props.location.key})}
+				</Container>
+			</Container>
+			
 		)
 	}
 });

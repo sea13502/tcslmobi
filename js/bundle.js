@@ -82,6 +82,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Route = __webpack_require__( 4 ).Route;
 	var IndexRoute = __webpack_require__( 4 ).IndexRoute;
 	var hashHistory = __webpack_require__( 4 ).hashHistory;
+	var browserHistory = __webpack_require__( 4 ).browserHistory;
 
 	var BaseComponent = __webpack_require__( 67 );
 	var RootApp = __webpack_require__( 76 );
@@ -5785,6 +5786,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var DishStore = __webpack_require__( 68 );
 
+	var Container = __webpack_require__( 75 ).Container;
+	var View = __webpack_require__( 75 ).View;
+
 	var AMUITouch = __webpack_require__(75);
 	var ButtonAm = AMUITouch.Button;
 
@@ -5834,11 +5838,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			
 
 			return(
-				React.createElement("div", null, 
-					React.createElement("div", {id: "leftbox", className: "left"}, 
+				React.createElement(View, {id: "diancaican"}, 
+					React.createElement(Container, {id: "leftbox", className: "left"}, 
 						 allDishClassArr 
 					), 
-					React.createElement("div", {id: "rightbox", className: "right"}, 
+					React.createElement(Container, {id: "rightbox", className: "right"}, 
 						 allDishArr 
 					)
 				)
@@ -6618,12 +6622,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var RootAppComponent = React.createClass({displayName: "RootAppComponent",
 		render:function(){
+			var transition = 'sfr';
 			return (
-				React.createElement("div", {
-	          		transition: "rfr"
-	        	}, 
-					 this.props.children
-				)	
+				React.createElement(Container, null, 
+					React.createElement(Container, {transition:  transition }, 
+						React.cloneElement(this.props.children, {key: this.props.location.key})
+					)
+				)
+				
 			)
 		}
 	});
@@ -6648,6 +6654,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	];
 
 	var HomeComponent = React.createClass({displayName: "HomeComponent",
+		getDefaultProps() {
+		    return {
+		      transition: 'rfr'
+		    };
+		},
+
 		render:function(){
 			var items = pages.map(function( item,i ){
 				return(

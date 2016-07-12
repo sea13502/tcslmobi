@@ -2,6 +2,7 @@ var Router = require( "react-router" ).Router;
 var Route = require( "react-router" ).Route;
 var IndexRoute = require( "react-router" ).IndexRoute;
 var hashHistory = require( "react-router" ).hashHistory;
+var browserHistory = require( "react-router" ).browserHistory;
 
 var BaseComponent = require( "./js/components/BaseComponent.js" );
 var RootApp = require( "./js/components/RootAppComponent.js" );

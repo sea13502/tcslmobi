@@ -1,6 +1,9 @@
 var React = require( "react" );
 var DishStore = require( "../stores/DishStore.js" );
 
+var Container = require( "amazeui-touch" ).Container;
+var View = require( "amazeui-touch" ).View;
+
 var AMUITouch = require("amazeui-touch");
 var ButtonAm = AMUITouch.Button;
 
@@ -50,14 +53,14 @@ var BaseComponent = React.createClass({
 		
 
 		return(
-			<div>
-				<div id="leftbox" className="left">
+			<View id="diancaican">
+				<Container id="leftbox" className="left">
 					{ allDishClassArr }
-				</div>
-				<div id="rightbox" className="right">
+				</Container>
+				<Container id="rightbox" className="right">
 					{ allDishArr }
-				</div>
-			</div>
+				</Container>
+			</View>
 		)
 	}
 

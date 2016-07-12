@@ -12,6 +12,12 @@ var pages = [
 ];
 
 var HomeComponent = React.createClass({
+	getDefaultProps() {
+	    return {
+	      transition: 'rfr'
+	    };
+	},
+
 	render:function(){
 		var items = pages.map(function( item,i ){
 			return(
