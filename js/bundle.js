@@ -5799,8 +5799,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		componentDidMount:function(){
-			document.getElementById("leftbox").style.height = document.documentElement.clientHeight + "px";
-			document.getElementById("rightbox").style.height = document.documentElement.clientHeight + "px";
+			//document.getElementById("leftbox").style.height = document.documentElement.clientHeight + "px";
+			//document.getElementById("rightbox").style.height = document.documentElement.clientHeight + "px";
 		},
 
 		render:function(){
@@ -6624,7 +6624,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		render:function(){
 			var transition = 'sfr';
 			return (
-				React.createElement(Container, null, 
+				React.createElement(Container, {direction: "column"}, 
 					React.createElement(Container, {transition:  transition }, 
 						React.cloneElement(this.props.children, {key: this.props.location.key})
 					)
@@ -6730,7 +6730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n.left{\r\n\tbackground: yellow;\r\n    display: inline-block;\r\n    width: 30%;\r\n    vertical-align: top;\r\n    overflow: scroll;\r\n}\r\n.right{\r\n\tbackground: blue;\r\n    display: inline-block;\r\n    width: 70%;\r\n    vertical-align: top;\r\n    overflow: scroll;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n", ""]);
+	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n#diancaican .left{\r\n\tbackground: yellow;\r\n    flex: 0 0 29%;\r\n    overflow: scroll;\r\n}\r\n#diancaican .right{\r\n\tbackground: blue;\r\n    overflow: scroll;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n#diancaican{\r\n    display: inline-flex;\r\n    flex-direction: row;\r\n}", ""]);
 
 	// exports
 

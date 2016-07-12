@@ -5,7 +5,7 @@ var RootAppComponent = React.createClass({
 	render:function(){
 		var transition = 'sfr';
 		return (
-			<Container>
+			<Container direction="column">
 				<Container transition={ transition }>
 					{React.cloneElement(this.props.children, {key: this.props.location.key})}
 				</Container>

@@ -2,18 +2,13 @@ body{
     background:pink;
     margin: 0;
 }
-.left{
+#diancaican .left{
 	background: yellow;
-    display: inline-block;
-    width: 30%;
-    vertical-align: top;
+    flex: 0 0 29%;
     overflow: scroll;
 }
-.right{
+#diancaican .right{
 	background: blue;
-    display: inline-block;
-    width: 70%;
-    vertical-align: top;
     overflow: scroll;
 }
 .dishGroupName{
@@ -26,3 +21,7 @@ body{
     height: 0px;  
     background-color: red;  
 }  
+#diancaican{
+    display: inline-flex;
+    flex-direction: row;
+}

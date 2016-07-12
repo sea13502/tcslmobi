@@ -14,8 +14,8 @@ var BaseComponent = React.createClass({
 	},
 
 	componentDidMount:function(){
-		document.getElementById("leftbox").style.height = document.documentElement.clientHeight + "px";
-		document.getElementById("rightbox").style.height = document.documentElement.clientHeight + "px";
+		//document.getElementById("leftbox").style.height = document.documentElement.clientHeight + "px";
+		//document.getElementById("rightbox").style.height = document.documentElement.clientHeight + "px";
 	},
 
 	render:function(){
