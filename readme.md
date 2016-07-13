@@ -1,5 +1,5 @@
 - 压缩问题，sourcemap问题
-- router问题
+- ~router问题~
 - 是不是要考虑下别的flux框架
 - 引入amazeui
 - 熟悉flux的架构
@@ -8,3 +8,6 @@
 - webpack-hot-loader
 - flexbox
 - 在oschina上做一个D1项目的仓库私密的
+- 把 react router 做为external引入
+- topbar 和 footer
+- 图片滚动加载的问题

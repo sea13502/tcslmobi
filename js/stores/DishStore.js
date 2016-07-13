@@ -7,10 +7,17 @@ var CHANGE_EVENT = "change";
 
 var allDishes = JSON.parse( 
 document.getElementById("dishdata").innerHTML );
+var allTc = {};
+if( document.getElementById("tcdata").innerHTML != "" ){
+	allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
+}
 
 var DishStore = assign({},EventEmitter.prototype,{
 	getAllDishes:function(){
 		return allDishes;
+	},
+	getAllTc:function(){
+		return allTc;
 	},
 	emitChange:function(){
 		this.emit( CHANGE_EVENT );

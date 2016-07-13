@@ -11,6 +11,12 @@ body{
 	background: blue;
     overflow: scroll;
 }
+.floatClassName{
+    position: fixed;
+    background:#fff;
+    width:100%;
+    opacity: 0.6;
+}
 .dishGroupName{
 	background:red;
 }

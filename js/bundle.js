@@ -57,7 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var ReactDom = __webpack_require__( 2 );
 	var routes = __webpack_require__( 3 );
-	var css = __webpack_require__( 83 );
+	var css = __webpack_require__( 85 );
 
 	ReactDom.render(routes,
 		document.getElementById("container"));
@@ -84,9 +84,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var hashHistory = __webpack_require__( 4 ).hashHistory;
 
 	var BaseComponent = __webpack_require__( 67 );
-	var RootApp = __webpack_require__( 79 );
-	var LianxiComponent = __webpack_require__( 80 );
-	var Home = __webpack_require__( 82 );
+	var RootApp = __webpack_require__( 81 );
+	var LianxiComponent = __webpack_require__( 82 );
+	var Home = __webpack_require__( 84 );
 
 
 	var routes = (
@@ -5787,61 +5787,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var DishStore = __webpack_require__( 68 );
 
-	var Container = __webpack_require__( 75 ).Container;
-	var Group = __webpack_require__( 75 ).Group;
-	var Grid = __webpack_require__( 75 ).Grid;
-	var Col = __webpack_require__( 75 ).Col;
 	var View = __webpack_require__( 75 ).View;
 
-	var BackButton = __webpack_require__( 76 );
-	var DishCell = __webpack_require__( 77 );
-	var DishclassCell = __webpack_require__( 78 );
+	var RightPart = __webpack_require__( 76 );
+	var LeftPart = __webpack_require__( 79 );
 
 	var BaseComponent = React.createClass({displayName: "BaseComponent",
 
-		getInitialState:function(){
-			return DishStore.getAllDishes();
-		},
+		// getInitialState:function(){
+		// 	return DishStore.getAllDishes();
+		// },
 
-		componentDidMount:function(){
-			//document.getElementById("leftbox").style.height = document.documentElement.clientHeight + "px";
-			//document.getElementById("rightbox").style.height = document.documentElement.clientHeight + "px";
-		},
+		// componentDidMount:function(){
+		// 	document.getElementById("leftbox").style.height = document.documentElement.clientHeight + "px";
+		// 	document.getElementById("rightbox").style.height = document.documentElement.clientHeight + "px";
+		// },
 
 		render:function(){
-			var allDish = this.state.alldish;
+			var allDish = DishStore.getAllDishes();
+			var allTc = DishStore.getAllTc();
 
-			var allDishClassArr = [];
-			var allDishArr = [];
-			for( var i = 0 ; i < allDish.length ; i++ ){
-				allDishClassArr.push( 
-					React.createElement("div", {key:  allDish[i].itemClassId}, 
-						 allDish[i].name
-					)
-				);
-				var dishInClass = [];
-				dishInClass.push(
-					React.createElement(DishclassCell, {data:  allDish[i] })
-				);
-				for( var j = 0 ; j < allDish[i].items.length ; j++ ){
-					dishInClass.push(
-						React.createElement(DishCell, {data:  allDish[i].items[j] })
-					);
-				}
-				allDishArr.push( dishInClass );
-			}
-
-			
+			console.log( allTc );
 
 			return(
 				React.createElement(View, {id: "diancaican"}, 
-					React.createElement(Container, {id: "leftbox", scrollable: true, className: "left"}, 
-						 allDishClassArr, 
-						React.createElement(BackButton, null)
-					), 
-					React.createElement(Container, {id: "rightbox", scrollable: true, className: "right"}, 
-						 allDishArr 
-					)
+					React.createElement(LeftPart, {data: allDish}), 
+					React.createElement(RightPart, {data: allDish})				
 				)
 			)
 		}
@@ -5863,10 +5834,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var allDishes = JSON.parse( 
 	document.getElementById("dishdata").innerHTML );
+	var allTc = {};
+	if( document.getElementById("tcdata").innerHTML != "" ){
+		allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
+	}
 
 	var DishStore = assign({},EventEmitter.prototype,{
 		getAllDishes:function(){
 			return allDishes;
+		},
+		getAllTc:function(){
+			return allTc;
 		},
 		emitChange:function(){
 			this.emit( CHANGE_EVENT );
@@ -6615,21 +6593,48 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var Button = __webpack_require__( 75 ).Button;
+	var DishCell = __webpack_require__( 77 );
+	var DishclassCell = __webpack_require__( 78 );
+	var Container = __webpack_require__( 75 ).Container;
 
-	var Link = __webpack_require__( 4 ).Link;
-
-	var BackButton = React.createClass({displayName: "BackButton",
+	var RightPart = React.createClass({displayName: "RightPart",
+		handleScroll:function(e){
+			console.log(e);
+		},
+		getInitialState:function() {
+		    return {
+		        crtClassName:this.props.data.alldish[0].name
+		    };
+		},
 		render:function(){
-			return(
-				React.createElement(Button, null, 
-					React.createElement(Link, {to: "/"}, "返回")
+			var allDish = this.props.data.alldish;
+
+			var allDishArr = [];
+			for( var i = 0 ; i < allDish.length ; i++ ){
+				var dishInClass = [];
+				dishInClass.push(
+					React.createElement(DishclassCell, {data:  allDish[i] })
+				);
+				for( var j = 0 ; j < allDish[i].items.length ; j++ ){
+					dishInClass.push(
+						React.createElement(DishCell, {data:  allDish[i].items[j] })
+					);
+				}
+				allDishArr.push( dishInClass );
+			}
+
+			return (
+				React.createElement(Container, {id: "rightbox", scrollable: true, className: "right", onScroll:  this.handleScroll}, 
+					React.createElement("div", {className: "floatClassName"}, 
+						 this.state.crtClassName
+					), 
+					 allDishArr 
 				)
-			)
+			);
 		}
 	});
 
-	module.exports = BackButton;
+	module.exports = RightPart;
 
 /***/ },
 /* 77 */
@@ -6676,6 +6681,59 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
+	var BackButton = __webpack_require__( 80 );
+	var Container = __webpack_require__( 75 ).Container;
+
+	var LeftPart = React.createClass({displayName: "LeftPart",
+		render:function(){
+			var allDish = this.props.data.alldish;
+
+			var allDishClassArr = [];
+			for( var i = 0 ; i < allDish.length ; i++ ){
+				allDishClassArr.push( 
+					React.createElement("div", {key:  allDish[i].itemClassId}, 
+						 allDish[i].name
+					)
+				);
+			}
+
+			return (
+				React.createElement(Container, {id: "leftbox", scrollable: true, className: "left"}, 
+					 allDishClassArr, 
+					React.createElement(BackButton, null)
+				)
+			)
+		}
+	});
+
+	module.exports = LeftPart;
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__( 1 );
+	var Button = __webpack_require__( 75 ).Button;
+
+	var Link = __webpack_require__( 4 ).Link;
+
+	var BackButton = React.createClass({displayName: "BackButton",
+		render:function(){
+			return(
+				React.createElement(Button, null, 
+					React.createElement(Link, {to: "/"}, "返回")
+				)
+			)
+		}
+	});
+
+	module.exports = BackButton;
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__( 1 );
 	var Container = __webpack_require__( 75 ).Container;
 
 	var RootAppComponent = React.createClass({displayName: "RootAppComponent",
@@ -6695,14 +6753,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RootAppComponent;
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
 	var View = __webpack_require__( 75 ).View;
 	//var pages = require( "../components/*" );
 	var pages = {};
-	pages["lianxi"] = __webpack_require__( 81 );
+	pages["lianxi"] = __webpack_require__( 83 );
 
 	var LianxiComponent = React.createClass({displayName: "LianxiComponent",
 
@@ -6723,11 +6781,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LianxiComponent;
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var BackButton = __webpack_require__( 76 );
+	var BackButton = __webpack_require__( 80 );
 
 	var LianxisonComponent = React.createClass({displayName: "LianxisonComponent",
 		render:function(){
@@ -6743,7 +6801,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LianxisonComponent;
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
@@ -6802,16 +6860,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = HomeComponent;
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(84);
+	var content = __webpack_require__(86);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(86)(content, {});
+	var update = __webpack_require__(88)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -6828,21 +6886,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(85)();
+	exports = module.exports = __webpack_require__(87)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n#diancaican .left{\r\n\tbackground: yellow;\r\n    flex: 0 0 29%;\r\n    overflow: scroll;\r\n}\r\n#diancaican .right{\r\n\tbackground: blue;\r\n    overflow: scroll;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n#diancaican{\r\n    display: inline-flex;\r\n    flex-direction: row;\r\n}", ""]);
+	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n#diancaican .left{\r\n\tbackground: yellow;\r\n    flex: 0 0 29%;\r\n    overflow: scroll;\r\n}\r\n#diancaican .right{\r\n\tbackground: blue;\r\n    overflow: scroll;\r\n}\r\n.floatClassName{\r\n    position: fixed;\r\n    background:#fff;\r\n    width:100%;\r\n    opacity: 0.6;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n#diancaican{\r\n    display: inline-flex;\r\n    flex-direction: row;\r\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports) {
 
 	/*
@@ -6898,7 +6956,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
