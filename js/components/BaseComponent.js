@@ -21,7 +21,7 @@ var BaseComponent = React.createClass({
 		var allDish = DishStore.getAllDishes();
 		var allTc = DishStore.getAllTc();
 
-		console.log( allTc );
+		//console.log( allTc );
 
 		return(
 			<View id="diancaican">

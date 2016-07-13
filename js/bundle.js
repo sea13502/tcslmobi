@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("React"), require("ReactDOM"), require("AMUITouch")) : factory(root["React"], root["ReactDOM"], root["AMUITouch"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_75__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_76__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -57,7 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var ReactDom = __webpack_require__( 2 );
 	var routes = __webpack_require__( 3 );
-	var css = __webpack_require__( 85 );
+	var css = __webpack_require__( 87 );
 
 	ReactDom.render(routes,
 		document.getElementById("container"));
@@ -84,9 +84,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var hashHistory = __webpack_require__( 4 ).hashHistory;
 
 	var BaseComponent = __webpack_require__( 67 );
-	var RootApp = __webpack_require__( 81 );
-	var LianxiComponent = __webpack_require__( 82 );
-	var Home = __webpack_require__( 84 );
+	var RootApp = __webpack_require__( 83 );
+	var LianxiComponent = __webpack_require__( 84 );
+	var Home = __webpack_require__( 86 );
 
 
 	var routes = (
@@ -5787,10 +5787,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var DishStore = __webpack_require__( 68 );
 
-	var View = __webpack_require__( 75 ).View;
+	var View = __webpack_require__( 76 ).View;
 
-	var RightPart = __webpack_require__( 76 );
-	var LeftPart = __webpack_require__( 79 );
+	var RightPart = __webpack_require__( 77 );
+	var LeftPart = __webpack_require__( 81 );
 
 	var BaseComponent = React.createClass({displayName: "BaseComponent",
 
@@ -5807,7 +5807,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var allDish = DishStore.getAllDishes();
 			var allTc = DishStore.getAllTc();
 
-			console.log( allTc );
+			//console.log( allTc );
 
 			return(
 				React.createElement(View, {id: "diancaican"}, 
@@ -5826,9 +5826,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__( 69 );
-	var EventEmitter = __webpack_require__(73).EventEmitter;
+	var DishConstants = __webpack_require__( 73 );
+	var EventEmitter = __webpack_require__(74).EventEmitter;
 
-	var assign = __webpack_require__(74);
+	var assign = __webpack_require__(75);
 
 	var CHANGE_EVENT = "change";
 
@@ -5838,6 +5839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if( document.getElementById("tcdata").innerHTML != "" ){
 		allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
 	}
+	var dishclassName = "";
 
 	var DishStore = assign({},EventEmitter.prototype,{
 		getAllDishes:function(){
@@ -5859,7 +5861,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	AppDispatcher.register(function( action ){
 		switch( action.actionType ){
-			case "DISHBOX_RESIZE":
+			case DishConstants.RIGHT_SCROLL:
 				DishStore.emitChange();
 				break;
 
@@ -6189,6 +6191,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 73 */
 /***/ function(module, exports) {
 
+	module.exports = {
+	  RIGHT_SCROLL: "RIGHT_SCROLL"
+	};
+
+/***/ },
+/* 74 */
+/***/ function(module, exports) {
+
 	// Copyright Joyent, Inc. and other Node contributors.
 	//
 	// Permission is hereby granted, free of charge, to any person obtaining a
@@ -6494,7 +6504,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6583,23 +6593,41 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_75__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_76__;
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var DishCell = __webpack_require__( 77 );
-	var DishclassCell = __webpack_require__( 78 );
-	var Container = __webpack_require__( 75 ).Container;
+	var DishCell = __webpack_require__( 78 );
+	var DishclassCell = __webpack_require__( 79 );
+	var DishStore = __webpack_require__( 68 );
+	var DishActions = __webpack_require__( 80 );
+
+	var Container = __webpack_require__( 76 ).Container;
 
 	var RightPart = React.createClass({displayName: "RightPart",
+		// componentDidUpdate:function(prevProps, prevState) {
+		//   	// var node = document.getElementById( "rightbox" );
+	 //  		// node.scrollTop = node.scrollHeight;
+	 //  		console.log( "componentDidUpdate" );
+		// },
+		// componentWillUpdate:function(){
+		// 	console.log( "componentWillUpdate" );	
+		// },
+		componentDidMount:function(){
+		    DishStore.addChangeListener( this._onChange );
+		},
+		componentWillMount:function(){
+		    DishStore.removeChangeListener( this._onChange );
+		},
 		handleScroll:function(e){
-			console.log(e);
+			//console.log(e);
+			DishActions.rightpartScroll();
 		},
 		getInitialState:function() {
 		    return {
@@ -6631,13 +6659,16 @@ return /******/ (function(modules) { // webpackBootstrap
 					 allDishArr 
 				)
 			);
+		},
+		_onChange:function(){
+			console.log(  "scrolling");
 		}
 	});
 
 	module.exports = RightPart;
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -6657,7 +6688,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DishCell;
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -6677,12 +6708,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DishclassCell;
 
 /***/ },
-/* 79 */
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(69);
+	var DishConstants = __webpack_require__( 73 );
+
+	var DishActions = {
+		rightpartScroll : function(){
+			AppDispatcher.dispatch({
+				actionType : DishConstants.RIGHT_SCROLL
+			});
+		}
+	};
+
+	module.exports = DishActions;
+
+/***/ },
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var BackButton = __webpack_require__( 80 );
-	var Container = __webpack_require__( 75 ).Container;
+	var BackButton = __webpack_require__( 82 );
+	var Container = __webpack_require__( 76 ).Container;
 
 	var LeftPart = React.createClass({displayName: "LeftPart",
 		render:function(){
@@ -6709,11 +6757,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LeftPart;
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var Button = __webpack_require__( 75 ).Button;
+	var Button = __webpack_require__( 76 ).Button;
 
 	var Link = __webpack_require__( 4 ).Link;
 
@@ -6730,11 +6778,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = BackButton;
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var Container = __webpack_require__( 75 ).Container;
+	var Container = __webpack_require__( 76 ).Container;
 
 	var RootAppComponent = React.createClass({displayName: "RootAppComponent",
 		render:function(){
@@ -6753,14 +6801,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RootAppComponent;
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var View = __webpack_require__( 75 ).View;
+	var View = __webpack_require__( 76 ).View;
 	//var pages = require( "../components/*" );
 	var pages = {};
-	pages["lianxi"] = __webpack_require__( 83 );
+	pages["lianxi"] = __webpack_require__( 85 );
 
 	var LianxiComponent = React.createClass({displayName: "LianxiComponent",
 
@@ -6781,11 +6829,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LianxiComponent;
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
-	var BackButton = __webpack_require__( 80 );
+	var BackButton = __webpack_require__( 82 );
 
 	var LianxisonComponent = React.createClass({displayName: "LianxisonComponent",
 		render:function(){
@@ -6801,17 +6849,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LianxisonComponent;
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
 	var Link = __webpack_require__( 4 ).Link;
 
-	var Container = __webpack_require__( 75 ).Container;
-	var List = __webpack_require__( 75 ).List;
-	var NavBar = __webpack_require__( 75 ).NavBar;
-	var Group = __webpack_require__( 75 ).Group;
-	var View = __webpack_require__( 75 ).View;
+	var Container = __webpack_require__( 76 ).Container;
+	var List = __webpack_require__( 76 ).List;
+	var NavBar = __webpack_require__( 76 ).NavBar;
+	var Group = __webpack_require__( 76 ).Group;
+	var View = __webpack_require__( 76 ).View;
 
 	var pages = [
 		"diancai","lianxi"
@@ -6860,16 +6908,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = HomeComponent;
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(86);
+	var content = __webpack_require__(88);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(88)(content, {});
+	var update = __webpack_require__(90)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -6886,10 +6934,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(87)();
+	exports = module.exports = __webpack_require__(89)();
 	// imports
 
 
@@ -6900,7 +6948,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports) {
 
 	/*
@@ -6956,7 +7004,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

@@ -1,9 +1,10 @@
 var AppDispatcher = require("../dispatcher/AppDispatcher.js");
+var DishConstants = require( "../constants/DishConstants.js" );
 
 var DishActions = {
-	resizeBox : function(){
+	rightpartScroll : function(){
 		AppDispatcher.dispatch({
-			actionType : "DISHBOX_RESIZE"
+			actionType : DishConstants.RIGHT_SCROLL
 		});
 	}
 };

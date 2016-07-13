@@ -1,4 +1,5 @@
 var AppDispatcher = require( '../dispatcher/AppDispatcher.js' );
+var DishConstants = require( "../constants/DishConstants.js" );
 var EventEmitter = require('events').EventEmitter;
 
 var assign = require('object-assign');
@@ -11,6 +12,7 @@ var allTc = {};
 if( document.getElementById("tcdata").innerHTML != "" ){
 	allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
 }
+var dishclassName = "";
 
 var DishStore = assign({},EventEmitter.prototype,{
 	getAllDishes:function(){
@@ -18,6 +20,9 @@ var DishStore = assign({},EventEmitter.prototype,{
 	},
 	getAllTc:function(){
 		return allTc;
+	},
+	getCrtclassname:function(){
+		return dishclassName;
 	},
 	emitChange:function(){
 		this.emit( CHANGE_EVENT );
@@ -32,7 +37,7 @@ var DishStore = assign({},EventEmitter.prototype,{
 
 AppDispatcher.register(function( action ){
 	switch( action.actionType ){
-		case "DISHBOX_RESIZE":
+		case DishConstants.RIGHT_SCROLL:
 			DishStore.emitChange();
 			break;
 
