@@ -12,7 +12,11 @@ var allTc = {};
 if( document.getElementById("tcdata").innerHTML != "" ){
 	allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
 }
-var dishclassName = "";
+var dishCrtclass = allDishes.alldish[0];
+
+function updateDishCrtclass( dishIndex ){
+	dishCrtclass = allDishes.alldish[ dishIndex ];
+}
 
 var DishStore = assign({},EventEmitter.prototype,{
 	getAllDishes:function(){
@@ -21,8 +25,8 @@ var DishStore = assign({},EventEmitter.prototype,{
 	getAllTc:function(){
 		return allTc;
 	},
-	getCrtclassname:function(){
-		return dishclassName;
+	getCrtclass:function(){
+		return dishCrtclass;
 	},
 	emitChange:function(){
 		this.emit( CHANGE_EVENT );
@@ -38,9 +42,9 @@ var DishStore = assign({},EventEmitter.prototype,{
 AppDispatcher.register(function( action ){
 	switch( action.actionType ){
 		case DishConstants.RIGHT_SCROLL:
+			updateDishCrtclass( action.dishIndex );
 			DishStore.emitChange();
 			break;
-
 		default:
 	}
 });

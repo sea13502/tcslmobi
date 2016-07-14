@@ -24,7 +24,8 @@ module.exports = {
 		"react-dom":"ReactDOM",
 		'amazeui-touch': 'AMUITouch',
   		'react-addons-css-transition-group':
-    	['React', 'addons', 'CSSTransitionGroup']
+    	['React', 'addons', 'CSSTransitionGroup'],
+    	'react-router':'ReactRouter'
 	}
 	// ,
 	// resolve: {
