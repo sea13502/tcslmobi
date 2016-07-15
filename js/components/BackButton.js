@@ -7,7 +7,7 @@ var BackButton = React.createClass({
 	render:function(){
 		return(
 			<Button>
-				<Link to="/">返回</Link>
+				<Link to="/">返1回</Link>
 			</Button>
 		)
 	}

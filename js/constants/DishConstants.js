@@ -1,3 +1,4 @@
 module.exports = {
-  RIGHT_SCROLL: "RIGHT_SCROLL"
+  RIGHT_SCROLL: "RIGHT_SCROLL",
+  LFFT_CLICK:"LFFT_CLICK"
 };

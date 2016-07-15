@@ -1,6 +1,7 @@
 var React = require( "react" );
 var BackButton = require( "../../components/BackButton.js" );
 var Container = require( "amazeui-touch" ).Container;
+var LeftdishClasscell = require( "../../components/dish/LeftdishClasscell.js" );
 
 var LeftPart = React.createClass({
 	render:function(){
@@ -9,9 +10,7 @@ var LeftPart = React.createClass({
 		var allDishClassArr = [];
 		for( var i = 0 ; i < allDish.length ; i++ ){
 			allDishClassArr.push( 
-				<div key={ allDish[i].itemClassId }>
-					{ allDish[i].name }
-				</div>
+				<LeftdishClasscell singleClass={ allDish[i] } index={ i } />
 			);
 		}
 

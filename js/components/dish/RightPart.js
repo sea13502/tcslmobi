@@ -18,6 +18,20 @@ var RightPart = React.createClass({
 	// },
 	componentDidMount:function(){
 	    DishStore.addChangeListener( this._onChange );
+
+	    var wholeDis = [];
+
+		for( 
+			var i = 0 ;
+			i < document.getElementsByClassName( "singleclassName" ).length ;
+			i++	
+		 ){
+			wholeDis.push( 
+				document.getElementsByClassName( "singleclassName" )[i].getBoundingClientRect().top
+			)
+		}
+
+		this._wholeDisArr = wholeDis;
 	},
 	componentWillMount:function(){
 	    DishStore.removeChangeListener( this._onChange );
@@ -33,7 +47,9 @@ var RightPart = React.createClass({
 		// }
 		//var max = this._suchDom().foodCategory.length - 1;
 		//var sTop = this._suchDom().menuContent.scrollTop;
-		 
+		//e.preventDefault();
+		e.stopPropagation();
+		this._isScrolling = true;
 		for( var i = 0 , $category ; $category = this._suchDom().foodCategory[i] ; i++ ){
 			if (!$category) {
                 break;
@@ -44,9 +60,10 @@ var RightPart = React.createClass({
             //var nTop = i < max ? this._suchDom().foodCategory[i+1].getBoundingClientRect().top : this._suchDom().menuContent.scrollHeight;
 			//console.log( sTop,pTop );
 			if( $categoryNext ){
-				if( pTop < 0 && $categoryNext.getBoundingClientRect().top > 0 ){
+				if( pTop <= 0 && $categoryNext.getBoundingClientRect().top > 0 ){
 					//console.log( this.props.data.alldish[i].name );
 					DishActions.rightpartScroll( i );
+					//alert(i);
 				}
 			}else if( pTop == 0 ){
 				//console.log( this.props.data.alldish[ this.props.data.alldish.length-1 ].name );
@@ -57,7 +74,7 @@ var RightPart = React.createClass({
 			// }
 
 		}
-
+		this._isScrolling = false;
 	},
 	getInitialState:function() {
 	    return {
@@ -92,11 +109,18 @@ var RightPart = React.createClass({
 		}
 
 		return (
-			<Container id="rightbox"  style={{ "position": "relative" }} scrollable className="right" onScroll={ this.handleScroll }>
+			<Container id="rightbox" className="right" 
+			  scrollable
+			  onTouchStart={ this.handleScroll } 
+			  onTouchMove={ this.handleScroll } 
+			  onScroll={ this.handleScroll }
+			>
 				<div className="floatClassName">
 					{ this.state.crtClassName }
 				</div>
-				{ allDishArr }
+				<Container id="dishScroller" scrollable>
+					{ allDishArr }
+				</Container>
 			</Container>
 		);
 	},
@@ -105,6 +129,14 @@ var RightPart = React.createClass({
 		//this.state.crtClassName = DishStore.getCrtclass().name;
 		//console.log( DishStore.getCrtclass().name );
 		this.setState( { crtClassName:DishStore.getCrtclass().name } );
+		if( !this._isScrolling ){
+			//console.log( DishStore.getCrtclassIndex() );
+			document.getElementById( "dishScroller" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ];
+			console.log( this._wholeDisArr );
+			// this._suchDom().foodCategory[ DishStore.getCrtclassIndex() ].
+			// getBoundingClientRect().top;
+		}
+	
 	},
 	_suchDom:function(){
 		return{ 
@@ -112,7 +144,9 @@ var RightPart = React.createClass({
 			foodCategory:document.getElementsByClassName( "singleclassName" ),
 			clientHeight:document.documentElement.clientHeight
 		}
-	}
+	},
+	//为了分辨是按钮的chenge事件还是滚动的cheng事件
+	_isScrolling:false
 });
 
 module.exports = RightPart;

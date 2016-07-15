@@ -12,7 +12,8 @@ body{
     overflow: scroll;
 }
 .floatClassName{
-    position: fixed;
+    position: absolute;
+    z-index: 20;
     background:#fff;
     width:100%;
     opacity: 0.6;
@@ -30,4 +31,7 @@ body{
 #diancaican{
     display: inline-flex;
     flex-direction: row;
+}
+.active{
+    background:pink;
 }

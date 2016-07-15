@@ -13,9 +13,11 @@ if( document.getElementById("tcdata").innerHTML != "" ){
 	allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
 }
 var dishCrtclass = allDishes.alldish[0];
+var dishCrtclassIndex = 0;
 
 function updateDishCrtclass( dishIndex ){
 	dishCrtclass = allDishes.alldish[ dishIndex ];
+	dishCrtclassIndex = dishIndex;
 }
 
 var DishStore = assign({},EventEmitter.prototype,{
@@ -27,6 +29,9 @@ var DishStore = assign({},EventEmitter.prototype,{
 	},
 	getCrtclass:function(){
 		return dishCrtclass;
+	},
+	getCrtclassIndex:function(){
+		return dishCrtclassIndex;
 	},
 	emitChange:function(){
 		this.emit( CHANGE_EVENT );
@@ -42,9 +47,13 @@ var DishStore = assign({},EventEmitter.prototype,{
 AppDispatcher.register(function( action ){
 	switch( action.actionType ){
 		case DishConstants.RIGHT_SCROLL:
+			//更新数据
 			updateDishCrtclass( action.dishIndex );
 			DishStore.emitChange();
 			break;
+		case DishConstants.LFFT_CLICK:
+			updateDishCrtclass( action.dishIndex );
+			DishStore.emitChange();
 		default:
 	}
 });

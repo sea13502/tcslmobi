@@ -57,7 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var ReactDom = __webpack_require__( 2 );
 	var routes = __webpack_require__( 3 );
-	var css = __webpack_require__( 26 );
+	var css = __webpack_require__( 27 );
 
 	ReactDom.render(routes,
 		document.getElementById("container"));
@@ -84,9 +84,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var hashHistory = __webpack_require__( 4 ).hashHistory;
 
 	var BaseComponent = __webpack_require__( 5 );
-	var RootApp = __webpack_require__( 22 );
-	var LianxiComponent = __webpack_require__( 23 );
-	var Home = __webpack_require__( 25 );
+	var RootApp = __webpack_require__( 23 );
+	var LianxiComponent = __webpack_require__( 24 );
+	var Home = __webpack_require__( 26 );
 
 
 	var routes = (
@@ -167,9 +167,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
 	}
 	var dishCrtclass = allDishes.alldish[0];
+	var dishCrtclassIndex = 0;
 
 	function updateDishCrtclass( dishIndex ){
 		dishCrtclass = allDishes.alldish[ dishIndex ];
+		dishCrtclassIndex = dishIndex;
 	}
 
 	var DishStore = assign({},EventEmitter.prototype,{
@@ -181,6 +183,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		getCrtclass:function(){
 			return dishCrtclass;
+		},
+		getCrtclassIndex:function(){
+			return dishCrtclassIndex;
 		},
 		emitChange:function(){
 			this.emit( CHANGE_EVENT );
@@ -196,9 +201,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	AppDispatcher.register(function( action ){
 		switch( action.actionType ){
 			case DishConstants.RIGHT_SCROLL:
+				//更新数据
 				updateDishCrtclass( action.dishIndex );
 				DishStore.emitChange();
 				break;
+			case DishConstants.LFFT_CLICK:
+				updateDishCrtclass( action.dishIndex );
+				DishStore.emitChange();
 			default:
 		}
 	});
@@ -651,7 +660,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-	  RIGHT_SCROLL: "RIGHT_SCROLL"
+	  RIGHT_SCROLL: "RIGHT_SCROLL",
+	  LFFT_CLICK:"LFFT_CLICK"
 	};
 
 /***/ },
@@ -1081,6 +1091,20 @@ return /******/ (function(modules) { // webpackBootstrap
 		// },
 		componentDidMount:function(){
 		    DishStore.addChangeListener( this._onChange );
+
+		    var wholeDis = [];
+
+			for( 
+				var i = 0 ;
+				i < document.getElementsByClassName( "singleclassName" ).length ;
+				i++	
+			 ){
+				wholeDis.push( 
+					document.getElementsByClassName( "singleclassName" )[i].getBoundingClientRect().top
+				)
+			}
+
+			this._wholeDisArr = wholeDis;
 		},
 		componentWillMount:function(){
 		    DishStore.removeChangeListener( this._onChange );
@@ -1096,7 +1120,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			// }
 			//var max = this._suchDom().foodCategory.length - 1;
 			//var sTop = this._suchDom().menuContent.scrollTop;
-			 
+			//e.preventDefault();
+			e.stopPropagation();
+			this._isScrolling = true;
 			for( var i = 0 , $category ; $category = this._suchDom().foodCategory[i] ; i++ ){
 				if (!$category) {
 	                break;
@@ -1107,9 +1133,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            //var nTop = i < max ? this._suchDom().foodCategory[i+1].getBoundingClientRect().top : this._suchDom().menuContent.scrollHeight;
 				//console.log( sTop,pTop );
 				if( $categoryNext ){
-					if( pTop < 0 && $categoryNext.getBoundingClientRect().top > 0 ){
+					if( pTop <= 0 && $categoryNext.getBoundingClientRect().top > 0 ){
 						//console.log( this.props.data.alldish[i].name );
 						DishActions.rightpartScroll( i );
+						//alert(i);
 					}
 				}else if( pTop == 0 ){
 					//console.log( this.props.data.alldish[ this.props.data.alldish.length-1 ].name );
@@ -1120,7 +1147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				// }
 
 			}
-
+			this._isScrolling = false;
 		},
 		getInitialState:function() {
 		    return {
@@ -1155,11 +1182,18 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			return (
-				React.createElement(Container, {id: "rightbox", style: { "position": "relative"}, scrollable: true, className: "right", onScroll:  this.handleScroll}, 
+				React.createElement(Container, {id: "rightbox", className: "right", 
+				  scrollable: true, 
+				  onTouchStart:  this.handleScroll, 
+				  onTouchMove:  this.handleScroll, 
+				  onScroll:  this.handleScroll
+				}, 
 					React.createElement("div", {className: "floatClassName"}, 
 						 this.state.crtClassName
 					), 
-					 allDishArr 
+					React.createElement(Container, {id: "dishScroller", scrollable: true}, 
+						 allDishArr 
+					)
 				)
 			);
 		},
@@ -1168,6 +1202,14 @@ return /******/ (function(modules) { // webpackBootstrap
 			//this.state.crtClassName = DishStore.getCrtclass().name;
 			//console.log( DishStore.getCrtclass().name );
 			this.setState( { crtClassName:DishStore.getCrtclass().name } );
+			if( !this._isScrolling ){
+				//console.log( DishStore.getCrtclassIndex() );
+				document.getElementById( "dishScroller" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ];
+				console.log( this._wholeDisArr );
+				// this._suchDom().foodCategory[ DishStore.getCrtclassIndex() ].
+				// getBoundingClientRect().top;
+			}
+		
 		},
 		_suchDom:function(){
 			return{ 
@@ -1175,7 +1217,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				foodCategory:document.getElementsByClassName( "singleclassName" ),
 				clientHeight:document.documentElement.clientHeight
 			}
-		}
+		},
+		//为了分辨是按钮的chenge事件还是滚动的cheng事件
+		_isScrolling:false
 	});
 
 	module.exports = RightPart;
@@ -1233,6 +1277,12 @@ return /******/ (function(modules) { // webpackBootstrap
 				actionType : DishConstants.RIGHT_SCROLL,
 				dishIndex : dishIndex
 			});
+		},
+		leftBtnClick : function( dishIndex ){
+			AppDispatcher.dispatch({
+				actionType : DishConstants.LFFT_CLICK,
+				dishIndex : dishIndex
+			});
 		}
 	};
 
@@ -1245,6 +1295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__( 1 );
 	var BackButton = __webpack_require__( 21 );
 	var Container = __webpack_require__( 15 ).Container;
+	var LeftdishClasscell = __webpack_require__( 22 );
 
 	var LeftPart = React.createClass({displayName: "LeftPart",
 		render:function(){
@@ -1253,9 +1304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var allDishClassArr = [];
 			for( var i = 0 ; i < allDish.length ; i++ ){
 				allDishClassArr.push( 
-					React.createElement("div", {key:  allDish[i].itemClassId}, 
-						 allDish[i].name
-					)
+					React.createElement(LeftdishClasscell, {singleClass:  allDish[i], index:  i })
 				);
 			}
 
@@ -1283,7 +1332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		render:function(){
 			return(
 				React.createElement(Button, null, 
-					React.createElement(Link, {to: "/"}, "返回")
+					React.createElement(Link, {to: "/"}, "返1回")
 				)
 			)
 		}
@@ -1293,6 +1342,54 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__( 1 );
+	var DishStore = __webpack_require__( 6 );
+	var DishActions = __webpack_require__( 19 );
+
+	var LeftdishClasscell = React.createClass({displayName: "LeftdishClasscell",
+		getInitialState:function(){
+		    return {
+		          dishClassStyle:""
+		    };
+		},
+		componentDidMount:function() {
+		    DishStore.addChangeListener( this._onChange );
+		},
+		componentWillMount:function(){
+		    DishStore.removeChangeListener( this._onChange );
+		},
+		render:function(){
+			var singleClass = this.props.singleClass;
+			var index = this.props.index;
+
+			return(
+				React.createElement("div", {key:  singleClass.itemClassId, 
+					 onClick:  this.clickHandler, 
+					 className:  this.state.dishClassStyle
+				}, 
+					 singleClass.name
+				)
+			)
+		},
+		clickHandler:function(){
+			//console.log( this.props.singleClass );
+			DishActions.leftBtnClick( this.props.index );
+		},
+		_onChange:function(){
+			if(DishStore.getCrtclassIndex() == this.props.index){
+				this.setState( { dishClassStyle : "active" } );
+			}else{
+				this.setState( { dishClassStyle : "" } );
+			}
+		}
+	});
+
+	module.exports = LeftdishClasscell;
+
+/***/ },
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
@@ -1315,14 +1412,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = RootAppComponent;
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
 	var View = __webpack_require__( 15 ).View;
 	//var pages = require( "../components/*" );
 	var pages = {};
-	pages["lianxi"] = __webpack_require__( 24 );
+	pages["lianxi"] = __webpack_require__( 25 );
 
 	var LianxiComponent = React.createClass({displayName: "LianxiComponent",
 
@@ -1343,7 +1440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LianxiComponent;
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
@@ -1363,7 +1460,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = LianxisonComponent;
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__( 1 );
@@ -1422,16 +1519,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = HomeComponent;
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(27);
+	var content = __webpack_require__(28);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(29)(content, {});
+	var update = __webpack_require__(30)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -1448,21 +1545,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(28)();
+	exports = module.exports = __webpack_require__(29)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n#diancaican .left{\r\n\tbackground: yellow;\r\n    flex: 0 0 29%;\r\n    overflow: scroll;\r\n}\r\n#diancaican .right{\r\n\tbackground: pink;\r\n    overflow: scroll;\r\n}\r\n.floatClassName{\r\n    position: fixed;\r\n    background:#fff;\r\n    width:100%;\r\n    opacity: 0.6;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n#diancaican{\r\n    display: inline-flex;\r\n    flex-direction: row;\r\n}", ""]);
+	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n#diancaican .left{\r\n\tbackground: yellow;\r\n    flex: 0 0 29%;\r\n    overflow: scroll;\r\n}\r\n#diancaican .right{\r\n\tbackground: pink;\r\n    overflow: scroll;\r\n}\r\n.floatClassName{\r\n    position: absolute;\r\n    z-index: 20;\r\n    background:#fff;\r\n    width:100%;\r\n    opacity: 0.6;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n#diancaican{\r\n    display: inline-flex;\r\n    flex-direction: row;\r\n}\r\n.active{\r\n    background:pink;\r\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	/*
@@ -1518,7 +1615,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

@@ -7,6 +7,12 @@ var DishActions = {
 			actionType : DishConstants.RIGHT_SCROLL,
 			dishIndex : dishIndex
 		});
+	},
+	leftBtnClick : function( dishIndex ){
+		AppDispatcher.dispatch({
+			actionType : DishConstants.LFFT_CLICK,
+			dishIndex : dishIndex
+		});
 	}
 };
 
