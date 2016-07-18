@@ -3,7 +3,7 @@ var DishCell = require( "../../components/dish/DishCell.js" );
 var DishclassCell = require( "../../components/dish/DishclassCell.js" );
 var DishStore = require( "../../stores/DishStore.js" );
 var DishActions = require( "../../actions/DishActions.js" );
-
+var DishConstants = require( "../../constants/DishConstants.js" );
 var Container = require( "amazeui-touch" ).Container;
 
 
@@ -48,8 +48,8 @@ var RightPart = React.createClass({
 		//var max = this._suchDom().foodCategory.length - 1;
 		//var sTop = this._suchDom().menuContent.scrollTop;
 		//e.preventDefault();
-		e.stopPropagation();
-		this._isScrolling = true;
+		//e.stopPropagation();
+		//this._isScrolling = true;
 		for( var i = 0 , $category ; $category = this._suchDom().foodCategory[i] ; i++ ){
 			if (!$category) {
                 break;
@@ -74,7 +74,7 @@ var RightPart = React.createClass({
 			// }
 
 		}
-		this._isScrolling = false;
+		//this._isScrolling = false;
 	},
 	getInitialState:function() {
 	    return {
@@ -129,7 +129,7 @@ var RightPart = React.createClass({
 		//this.state.crtClassName = DishStore.getCrtclass().name;
 		//console.log( DishStore.getCrtclass().name );
 		this.setState( { crtClassName:DishStore.getCrtclass().name } );
-		if( !this._isScrolling ){
+		if( DishStore.getCrtActionType() == DishConstants.LFFT_CLICK ){
 			//console.log( DishStore.getCrtclassIndex() );
 			document.getElementById( "dishScroller" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ];
 			console.log( this._wholeDisArr );
@@ -146,7 +146,7 @@ var RightPart = React.createClass({
 		}
 	},
 	//为了分辨是按钮的chenge事件还是滚动的cheng事件
-	_isScrolling:false
+	//_isScrolling:false
 });
 
 module.exports = RightPart;

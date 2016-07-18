@@ -168,10 +168,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	var dishCrtclass = allDishes.alldish[0];
 	var dishCrtclassIndex = 0;
+	var crtActionType = "";
 
-	function updateDishCrtclass( dishIndex ){
-		dishCrtclass = allDishes.alldish[ dishIndex ];
-		dishCrtclassIndex = dishIndex;
+	function updateDishCrtclass( action ){
+		dishCrtclass = allDishes.alldish[ action.dishIndex ];
+		dishCrtclassIndex = action.dishIndex;
+		crtActionType = action.actionType;
 	}
 
 	var DishStore = assign({},EventEmitter.prototype,{
@@ -186,6 +188,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		getCrtclassIndex:function(){
 			return dishCrtclassIndex;
+		},
+		getCrtActionType:function(){
+			return crtActionType;
 		},
 		emitChange:function(){
 			this.emit( CHANGE_EVENT );
@@ -202,11 +207,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		switch( action.actionType ){
 			case DishConstants.RIGHT_SCROLL:
 				//更新数据
-				updateDishCrtclass( action.dishIndex );
+				updateDishCrtclass( action );
 				DishStore.emitChange();
 				break;
 			case DishConstants.LFFT_CLICK:
-				updateDishCrtclass( action.dishIndex );
+				updateDishCrtclass( action );
 				DishStore.emitChange();
 			default:
 		}
@@ -1076,7 +1081,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DishclassCell = __webpack_require__( 18 );
 	var DishStore = __webpack_require__( 6 );
 	var DishActions = __webpack_require__( 19 );
-
+	var DishConstants = __webpack_require__( 12 );
 	var Container = __webpack_require__( 15 ).Container;
 
 
@@ -1121,8 +1126,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			//var max = this._suchDom().foodCategory.length - 1;
 			//var sTop = this._suchDom().menuContent.scrollTop;
 			//e.preventDefault();
-			e.stopPropagation();
-			this._isScrolling = true;
+			//e.stopPropagation();
+			//this._isScrolling = true;
 			for( var i = 0 , $category ; $category = this._suchDom().foodCategory[i] ; i++ ){
 				if (!$category) {
 	                break;
@@ -1147,7 +1152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				// }
 
 			}
-			this._isScrolling = false;
+			//this._isScrolling = false;
 		},
 		getInitialState:function() {
 		    return {
@@ -1202,7 +1207,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			//this.state.crtClassName = DishStore.getCrtclass().name;
 			//console.log( DishStore.getCrtclass().name );
 			this.setState( { crtClassName:DishStore.getCrtclass().name } );
-			if( !this._isScrolling ){
+			if( DishStore.getCrtActionType() == DishConstants.LFFT_CLICK ){
 				//console.log( DishStore.getCrtclassIndex() );
 				document.getElementById( "dishScroller" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ];
 				console.log( this._wholeDisArr );
@@ -1219,7 +1224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 		//为了分辨是按钮的chenge事件还是滚动的cheng事件
-		_isScrolling:false
+		//_isScrolling:false
 	});
 
 	module.exports = RightPart;
@@ -1553,7 +1558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n#diancaican .left{\r\n\tbackground: yellow;\r\n    flex: 0 0 29%;\r\n    overflow: scroll;\r\n}\r\n#diancaican .right{\r\n\tbackground: pink;\r\n    overflow: scroll;\r\n}\r\n.floatClassName{\r\n    position: absolute;\r\n    z-index: 20;\r\n    background:#fff;\r\n    width:100%;\r\n    opacity: 0.6;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n#diancaican{\r\n    display: inline-flex;\r\n    flex-direction: row;\r\n}\r\n.active{\r\n    background:pink;\r\n}", ""]);
+	exports.push([module.id, "body{\n    background:pink;\n    margin: 0;\n}\n#diancaican .left{\n\tbackground: yellow;\n    flex: 0 0 29%;\n    overflow: scroll;\n}\n#diancaican .right{\n\tbackground: pink;\n    overflow: scroll;\n}\n.floatClassName{\n    position: absolute;\n    z-index: 20;\n    background:#fff;\n    width:100%;\n    opacity: 0.6;\n}\n.dishGroupName{\n\tbackground:red;\n}\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \n*::-webkit-scrollbar  \n{  \n    width: 0px;  \n    height: 0px;  \n    background-color: red;  \n}  \n#diancaican{\n    display: inline-flex;\n    flex-direction: row;\n}\n.active{\n    background:pink;\n}", ""]);
 
 	// exports
 
