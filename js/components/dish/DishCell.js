@@ -6,6 +6,9 @@ var DishCell = React.createClass({
 
 		return(
 			<div>
+				<div>
+					<img src={ data.taFileName } alt={ data.name } style={{ height:"86px" }}/>
+				</div>
 				{ data.name }
 			</div>
 		)

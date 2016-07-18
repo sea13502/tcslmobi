@@ -24,10 +24,15 @@ var BaseComponent = React.createClass({
 		//console.log( allTc );
 
 		return(
-			<View id="diancaican">
-				<LeftPart data={allDish} />
-				<RightPart data={allDish} />				
-			</View>
+			<div id="diancaican">
+				<div style={{ height:"45px" }}>
+					topbar
+				</div>
+				<div>
+					<LeftPart data={allDish} />
+					<RightPart data={allDish} />				
+				</div>
+			</div>
 		)
 	}
 

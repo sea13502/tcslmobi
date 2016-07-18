@@ -4,12 +4,19 @@ body{
 }
 #diancaican .left{
 	background: yellow;
-    flex: 0 0 29%;
     overflow: scroll;
+    display:inline-block;
+    width: 20%;
 }
 #diancaican .right{
 	background: pink;
     overflow: scroll;
+    display:inline-block;
+    width: 80%;
+}
+#rightBoxIn{
+    overflow: scroll;
+    -webkit-overflow-scrolling : touch;
 }
 .floatClassName{
     position: absolute;
@@ -29,9 +36,15 @@ body{
     background-color: red;  
 }  
 #diancaican{
-    display: inline-flex;
-    flex-direction: row;
+    width:100%;
 }
 .active{
     background:pink;
+}
+#dishScroller{
+    overflow: scroll;   
+}
+
+.LeftDishclass{
+    height: 40px;
 }

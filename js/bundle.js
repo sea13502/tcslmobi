@@ -137,9 +137,14 @@ return /******/ (function(modules) { // webpackBootstrap
 			//console.log( allTc );
 
 			return(
-				React.createElement(View, {id: "diancaican"}, 
-					React.createElement(LeftPart, {data: allDish}), 
-					React.createElement(RightPart, {data: allDish})				
+				React.createElement("div", {id: "diancaican"}, 
+					React.createElement("div", {style: { height:"45px"}}, 
+						"topbar"
+					), 
+					React.createElement("div", null, 
+						React.createElement(LeftPart, {data: allDish}), 
+						React.createElement(RightPart, {data: allDish})				
+					)
 				)
 			)
 		}
@@ -1086,15 +1091,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var RightPart = React.createClass({displayName: "RightPart",
-		// componentDidUpdate:function(prevProps, prevState) {
-		//   	// var node = document.getElementById( "rightbox" );
-	 //  		// node.scrollTop = node.scrollHeight;
-	 //  		console.log( "componentDidUpdate" );
-		// },
-		// componentWillUpdate:function(){
-		// 	console.log( "componentWillUpdate" );	
-		// },
 		componentDidMount:function(){
+			document.getElementById( "rightBoxIn" ).style.height = document.documentElement.clientHeight - this._topbarHeight + "px";
+
 		    DishStore.addChangeListener( this._onChange );
 
 		    var wholeDis = [];
@@ -1115,44 +1114,21 @@ return /******/ (function(modules) { // webpackBootstrap
 		    DishStore.removeChangeListener( this._onChange );
 		},
 		handleScroll:function(e){
-			//console.log(e);
-			//DishActions.rightpartScroll();
-			// console.log( "scrollTop",this._suchDom().menuContent.scrollTop );
-			// console.log( "scrollHeight",this._suchDom().menuContent.scrollHeight );
-			// console.log( "clientHeight",document.documentElement.clientHeight );
-			// for( var i = 0 ; i < this._suchDom().foodCategory.length ; i++ ){
-			// 	console.log( "position",this._suchDom().foodCategory[i].getBoundingClientRect().top );
-			// }
-			//var max = this._suchDom().foodCategory.length - 1;
-			//var sTop = this._suchDom().menuContent.scrollTop;
-			//e.preventDefault();
-			//e.stopPropagation();
-			//this._isScrolling = true;
 			for( var i = 0 , $category ; $category = this._suchDom().foodCategory[i] ; i++ ){
 				if (!$category) {
 	                break;
 	            }
 	            var $categoryNext = this._suchDom().foodCategory[i+1];
 	            var pTop = $category.getBoundingClientRect().top;
-
-	            //var nTop = i < max ? this._suchDom().foodCategory[i+1].getBoundingClientRect().top : this._suchDom().menuContent.scrollHeight;
-				//console.log( sTop,pTop );
 				if( $categoryNext ){
-					if( pTop <= 0 && $categoryNext.getBoundingClientRect().top > 0 ){
-						//console.log( this.props.data.alldish[i].name );
+					if( pTop <= this._topbarHeight && $categoryNext.getBoundingClientRect().top > this._topbarHeight ){
 						DishActions.rightpartScroll( i );
-						//alert(i);
 					}
-				}else if( pTop == 0 ){
-					//console.log( this.props.data.alldish[ this.props.data.alldish.length-1 ].name );
+				}else if( pTop <= this._topbarHeight ){
 					DishActions.rightpartScroll( i );
 				}
-				// else{
-				// 	console.log( this.props.data.alldish[ this.props.data.alldish.length-1 ].name );
-				// }
 
 			}
-			//this._isScrolling = false;
 		},
 		getInitialState:function() {
 		    return {
@@ -1177,7 +1153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 				//判断是不是最后一个，然后给对应的样式，让最后一个菜类能撑满
 				if( i == allDish.length-1 ){
-					styleObj = { height:this._suchDom().clientHeight };		
+					styleObj = { "min-height":this._suchDom().clientHeight - this._topbarHeight };
 				}
 				allDishArr.push(
 					React.createElement(Container, {className: "singleclassName", style:  styleObj }, 
@@ -1187,16 +1163,16 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			return (
-				React.createElement(Container, {id: "rightbox", className: "right", 
-				  scrollable: true, 
-				  onTouchStart:  this.handleScroll, 
-				  onTouchMove:  this.handleScroll, 
-				  onScroll:  this.handleScroll
-				}, 
+				React.createElement("div", {id: "rightbox", className: "right"}, 
 					React.createElement("div", {className: "floatClassName"}, 
 						 this.state.crtClassName
 					), 
-					React.createElement(Container, {id: "dishScroller", scrollable: true}, 
+					React.createElement("div", {id: "rightBoxIn", 
+						onTouchStart:  this.handleScroll, 
+						onTouchMove:  this.handleScroll, 
+				  		onScroll:  this.handleScroll, 
+				  		onTouchEnd:  this.handleScroll
+				  	}, 
 						 allDishArr 
 					)
 				)
@@ -1204,15 +1180,10 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		_onChange:function(){
 			//获取新的菜类名在浮动菜类上面显示 console.log(  "scrolling");
-			//this.state.crtClassName = DishStore.getCrtclass().name;
-			//console.log( DishStore.getCrtclass().name );
 			this.setState( { crtClassName:DishStore.getCrtclass().name } );
 			if( DishStore.getCrtActionType() == DishConstants.LFFT_CLICK ){
-				//console.log( DishStore.getCrtclassIndex() );
-				document.getElementById( "dishScroller" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ];
+				document.getElementById( "rightBoxIn" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ] - this._topbarHeight;
 				console.log( this._wholeDisArr );
-				// this._suchDom().foodCategory[ DishStore.getCrtclassIndex() ].
-				// getBoundingClientRect().top;
 			}
 		
 		},
@@ -1223,8 +1194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				clientHeight:document.documentElement.clientHeight
 			}
 		},
-		//为了分辨是按钮的chenge事件还是滚动的cheng事件
-		//_isScrolling:false
+		_topbarHeight:45
 	});
 
 	module.exports = RightPart;
@@ -1241,6 +1211,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return(
 				React.createElement("div", null, 
+					React.createElement("div", null, 
+						React.createElement("img", {src:  data.taFileName, alt:  data.name, style: { height:"86px"}})
+					), 
 					 data.name
 				)
 			)
@@ -1303,6 +1276,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var LeftdishClasscell = __webpack_require__( 22 );
 
 	var LeftPart = React.createClass({displayName: "LeftPart",
+		componentDidMount:function(){
+			document.getElementById( "leftbox" ).style.height = document.documentElement.clientHeight - 45 + "px";
+		},
 		render:function(){
 			var allDish = this.props.data.alldish;
 
@@ -1314,7 +1290,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			return (
-				React.createElement(Container, {id: "leftbox", scrollable: true, className: "left"}, 
+				React.createElement("div", {id: "leftbox", className: "left"}, 
 					 allDishClassArr, 
 					React.createElement(BackButton, null)
 				)
@@ -1356,7 +1332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var LeftdishClasscell = React.createClass({displayName: "LeftdishClasscell",
 		getInitialState:function(){
 		    return {
-		          dishClassStyle:""
+		          dishClassStyle:"LeftDishclass"
 		    };
 		},
 		componentDidMount:function() {
@@ -1384,9 +1360,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		_onChange:function(){
 			if(DishStore.getCrtclassIndex() == this.props.index){
-				this.setState( { dishClassStyle : "active" } );
+				this.setState( { dishClassStyle : "LeftDishclass active" } );
 			}else{
-				this.setState( { dishClassStyle : "" } );
+				this.setState( { dishClassStyle : "LeftDishclass" } );
 			}
 		}
 	});
@@ -1558,7 +1534,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	// module
-	exports.push([module.id, "body{\n    background:pink;\n    margin: 0;\n}\n#diancaican .left{\n\tbackground: yellow;\n    flex: 0 0 29%;\n    overflow: scroll;\n}\n#diancaican .right{\n\tbackground: pink;\n    overflow: scroll;\n}\n.floatClassName{\n    position: absolute;\n    z-index: 20;\n    background:#fff;\n    width:100%;\n    opacity: 0.6;\n}\n.dishGroupName{\n\tbackground:red;\n}\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \n*::-webkit-scrollbar  \n{  \n    width: 0px;  \n    height: 0px;  \n    background-color: red;  \n}  \n#diancaican{\n    display: inline-flex;\n    flex-direction: row;\n}\n.active{\n    background:pink;\n}", ""]);
+	exports.push([module.id, "body{\r\n    background:pink;\r\n    margin: 0;\r\n}\r\n#diancaican .left{\r\n\tbackground: yellow;\r\n    overflow: scroll;\r\n    display:inline-block;\r\n    width: 20%;\r\n}\r\n#diancaican .right{\r\n\tbackground: pink;\r\n    overflow: scroll;\r\n    display:inline-block;\r\n    width: 80%;\r\n}\r\n#rightBoxIn{\r\n    overflow: scroll;\r\n    -webkit-overflow-scrolling : touch;\r\n}\r\n.floatClassName{\r\n    position: absolute;\r\n    z-index: 20;\r\n    background:#fff;\r\n    width:100%;\r\n    opacity: 0.6;\r\n}\r\n.dishGroupName{\r\n\tbackground:red;\r\n}\r\n/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  \r\n*::-webkit-scrollbar  \r\n{  \r\n    width: 0px;  \r\n    height: 0px;  \r\n    background-color: red;  \r\n}  \r\n#diancaican{\r\n    width:100%;\r\n}\r\n.active{\r\n    background:pink;\r\n}\r\n#dishScroller{\r\n    overflow: scroll;   \r\n}\r\n\r\n.LeftDishclass{\r\n    height: 40px;\r\n}", ""]);
 
 	// exports
 

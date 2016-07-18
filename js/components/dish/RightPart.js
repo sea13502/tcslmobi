@@ -8,15 +8,9 @@ var Container = require( "amazeui-touch" ).Container;
 
 
 var RightPart = React.createClass({
-	// componentDidUpdate:function(prevProps, prevState) {
-	//   	// var node = document.getElementById( "rightbox" );
- //  		// node.scrollTop = node.scrollHeight;
- //  		console.log( "componentDidUpdate" );
-	// },
-	// componentWillUpdate:function(){
-	// 	console.log( "componentWillUpdate" );	
-	// },
 	componentDidMount:function(){
+		document.getElementById( "rightBoxIn" ).style.height = document.documentElement.clientHeight - this._topbarHeight + "px";
+
 	    DishStore.addChangeListener( this._onChange );
 
 	    var wholeDis = [];
@@ -37,44 +31,21 @@ var RightPart = React.createClass({
 	    DishStore.removeChangeListener( this._onChange );
 	},
 	handleScroll:function(e){
-		//console.log(e);
-		//DishActions.rightpartScroll();
-		// console.log( "scrollTop",this._suchDom().menuContent.scrollTop );
-		// console.log( "scrollHeight",this._suchDom().menuContent.scrollHeight );
-		// console.log( "clientHeight",document.documentElement.clientHeight );
-		// for( var i = 0 ; i < this._suchDom().foodCategory.length ; i++ ){
-		// 	console.log( "position",this._suchDom().foodCategory[i].getBoundingClientRect().top );
-		// }
-		//var max = this._suchDom().foodCategory.length - 1;
-		//var sTop = this._suchDom().menuContent.scrollTop;
-		//e.preventDefault();
-		//e.stopPropagation();
-		//this._isScrolling = true;
 		for( var i = 0 , $category ; $category = this._suchDom().foodCategory[i] ; i++ ){
 			if (!$category) {
                 break;
             }
             var $categoryNext = this._suchDom().foodCategory[i+1];
             var pTop = $category.getBoundingClientRect().top;
-
-            //var nTop = i < max ? this._suchDom().foodCategory[i+1].getBoundingClientRect().top : this._suchDom().menuContent.scrollHeight;
-			//console.log( sTop,pTop );
 			if( $categoryNext ){
-				if( pTop <= 0 && $categoryNext.getBoundingClientRect().top > 0 ){
-					//console.log( this.props.data.alldish[i].name );
+				if( pTop <= this._topbarHeight && $categoryNext.getBoundingClientRect().top > this._topbarHeight ){
 					DishActions.rightpartScroll( i );
-					//alert(i);
 				}
-			}else if( pTop == 0 ){
-				//console.log( this.props.data.alldish[ this.props.data.alldish.length-1 ].name );
+			}else if( pTop <= this._topbarHeight ){
 				DishActions.rightpartScroll( i );
 			}
-			// else{
-			// 	console.log( this.props.data.alldish[ this.props.data.alldish.length-1 ].name );
-			// }
 
 		}
-		//this._isScrolling = false;
 	},
 	getInitialState:function() {
 	    return {
@@ -99,7 +70,7 @@ var RightPart = React.createClass({
 			}
 			//判断是不是最后一个，然后给对应的样式，让最后一个菜类能撑满
 			if( i == allDish.length-1 ){
-				styleObj = { height:this._suchDom().clientHeight };		
+				styleObj = { "min-height":this._suchDom().clientHeight - this._topbarHeight };
 			}
 			allDishArr.push(
 				<Container className="singleclassName" style={ styleObj }>
@@ -109,32 +80,27 @@ var RightPart = React.createClass({
 		}
 
 		return (
-			<Container id="rightbox" className="right" 
-			  scrollable
-			  onTouchStart={ this.handleScroll } 
-			  onTouchMove={ this.handleScroll } 
-			  onScroll={ this.handleScroll }
-			>
+			<div id="rightbox" className="right">
 				<div className="floatClassName">
 					{ this.state.crtClassName }
 				</div>
-				<Container id="dishScroller" scrollable>
+				<div id="rightBoxIn" 
+					onTouchStart = { this.handleScroll }
+					onTouchMove = { this.handleScroll } 
+			  		onScroll = { this.handleScroll } 
+			  		onTouchEnd = { this.handleScroll }
+			  	>
 					{ allDishArr }
-				</Container>
-			</Container>
+				</div>
+			</div>
 		);
 	},
 	_onChange:function(){
 		//获取新的菜类名在浮动菜类上面显示 console.log(  "scrolling");
-		//this.state.crtClassName = DishStore.getCrtclass().name;
-		//console.log( DishStore.getCrtclass().name );
 		this.setState( { crtClassName:DishStore.getCrtclass().name } );
 		if( DishStore.getCrtActionType() == DishConstants.LFFT_CLICK ){
-			//console.log( DishStore.getCrtclassIndex() );
-			document.getElementById( "dishScroller" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ];
+			document.getElementById( "rightBoxIn" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ] - this._topbarHeight;
 			console.log( this._wholeDisArr );
-			// this._suchDom().foodCategory[ DishStore.getCrtclassIndex() ].
-			// getBoundingClientRect().top;
 		}
 	
 	},
@@ -145,8 +111,7 @@ var RightPart = React.createClass({
 			clientHeight:document.documentElement.clientHeight
 		}
 	},
-	//为了分辨是按钮的chenge事件还是滚动的cheng事件
-	//_isScrolling:false
+	_topbarHeight:45
 });
 
 module.exports = RightPart;

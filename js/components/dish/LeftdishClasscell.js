@@ -5,7 +5,7 @@ var DishActions = require( "../../actions/DishActions.js" );
 var LeftdishClasscell = React.createClass({
 	getInitialState:function(){
 	    return {
-	          dishClassStyle:""
+	          dishClassStyle:"LeftDishclass"
 	    };
 	},
 	componentDidMount:function() {
@@ -33,9 +33,9 @@ var LeftdishClasscell = React.createClass({
 	},
 	_onChange:function(){
 		if(DishStore.getCrtclassIndex() == this.props.index){
-			this.setState( { dishClassStyle : "active" } );
+			this.setState( { dishClassStyle : "LeftDishclass active" } );
 		}else{
-			this.setState( { dishClassStyle : "" } );
+			this.setState( { dishClassStyle : "LeftDishclass" } );
 		}
 	}
 });
