@@ -12,3 +12,5 @@
 - topbar 和 footer
 - 图片滚动加载的问题
 - 去掉没用的require
+- 结合echarts怎么用，按需加载echarts，结合webpack
+- 想想是不是可以在amazeui的基础上模仿着写一些插件
