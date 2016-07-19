@@ -1,4 +1,5 @@
 var path = require("path");
+var webpack = require( "webpack" );
 
 module.exports = {
 	entry:'./js/app.js',
@@ -8,6 +9,13 @@ module.exports = {
 		,
 		libraryTarget: "umd"
 	},
+	plugins:[
+		new webpack.optimize.UglifyJsPlugin({
+			compressor:{
+				warnings:false
+			}
+		})
+	],
 	module:{
 		loaders:[{
 			test:/\.js|jsx$/,

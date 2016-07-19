@@ -12,7 +12,7 @@ var pages = [
 ];
 
 var HomeComponent = React.createClass({
-	getDefaultProps() {
+	getDefaultProps:function() {
 	    return {
 	      transition: 'rfr'
 	    };

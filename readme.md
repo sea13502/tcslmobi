@@ -11,3 +11,4 @@
 - 把 react router 做为external引入
 - topbar 和 footer
 - 图片滚动加载的问题
+- 去掉没用的require
