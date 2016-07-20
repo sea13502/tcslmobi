@@ -9,13 +9,13 @@ module.exports = {
 		,
 		libraryTarget: "umd"
 	},
-	plugins:[
-		new webpack.optimize.UglifyJsPlugin({
-			compressor:{
-				warnings:false
-			}
-		})
-	],
+	// plugins:[
+	// 	new webpack.optimize.UglifyJsPlugin({
+	// 		compressor:{
+	// 			warnings:false
+	// 		}
+	// 	})
+	// ],
 	module:{
 		loaders:[{
 			test:/\.js|jsx$/,
