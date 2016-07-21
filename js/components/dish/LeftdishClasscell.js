@@ -10,6 +10,11 @@ var LeftdishClasscell = React.createClass({
 	},
 	componentDidMount:function() {
 	    DishStore.addChangeListener( this._onChange );
+	    if( this.props.index == 0 ){
+	    	this.setState({ dishClassStyle : "LeftDishclass active" });
+	    }
+
+
 	},
 	componentWillMount:function(){
 	    DishStore.removeChangeListener( this._onChange );

@@ -49,3 +49,18 @@ body{
 .LeftDishclass{
     height: 40px;
 }
+
+.dishImgPre{
+    float:left;
+    width:86px;
+    height:86px;
+    background:green;
+}
+.dishCan{
+    padding: 0 0 10px 0;
+}
+.dishCan:after{
+    content:" ";
+    display: block;
+    clear: both;
+}

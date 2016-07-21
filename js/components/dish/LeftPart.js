@@ -9,12 +9,19 @@ var LeftPart = React.createClass({
 	},
 	render:function(){
 		var allDish = this.props.data.alldish;
+		var allTc = this.props.tcdata.alltc;
 
 		var allDishClassArr = [];
 		for( var i = 0 ; i < allDish.length ; i++ ){
 			allDishClassArr.push( 
 				<LeftdishClasscell singleClass={ allDish[i] } index={ i } />
 			);
+		}
+		for( var j = 0 ; j < allTc.length ; j++ ){
+			var index = j + allDish.length;
+			allDishClassArr.push( 
+				<LeftdishClasscell singleClass={ allTc[j] } index={ index } />
+			);	
 		}
 
 		return (

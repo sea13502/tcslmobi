@@ -1,5 +1,6 @@
 var React = require( "react" );
 var DishCell = require( "../../components/dish/DishCell.js" );
+var TcCell = require( "../../components/dish/TcCell.js" );
 var DishclassCell = require( "../../components/dish/DishclassCell.js" );
 var DishStore = require( "../../stores/DishStore.js" );
 var DishActions = require( "../../actions/DishActions.js" );
@@ -11,7 +12,7 @@ function checkDishShow( dishImgGroup,dishes,canHeight ){
 	var scrollTop = document.getElementById("rightBoxIn").scrollTop;
 	for( var i = 0 ; i < dishes.length ; i++ ){
 		if( dishes[i] - 45 > scrollTop && ( scrollTop + canHeight ) > ( dishes[i] - 45 ) ){
-			console.log( dishImgGroup[i] );
+			//console.log( dishImgGroup[i] );
 			dishImgGroup[i].setAttribute( "src" , dishImgGroup[i].getAttribute( "data-lazy-src" ) );
 		}
 	}
@@ -20,7 +21,7 @@ function checkDishShow( dishImgGroup,dishes,canHeight ){
 
 var RightPart = React.createClass({
 	componentDidMount:function(){
-		document.getElementById( "rightBoxIn" ).style.height = document.documentElement.clientHeight - this._topbarHeight + "px";
+		document.getElementById( "rightBoxIn" ).style.height = document.documentElement.clientHeight - this._footerHeight - this._topbarHeight + "px";
 		//document.getElementById( "main" ).style.height = document.documentElement.clientHeight - this._topbarHeight + "px";
 	    DishStore.addChangeListener( this._onChange );
 
@@ -82,6 +83,7 @@ var RightPart = React.createClass({
 	},
 	render:function(){
 		var allDish = this.props.data.alldish;
+		var allTc = this.props.tcdata.alltc;
 
 		var styleObj = {};
 		
@@ -97,8 +99,10 @@ var RightPart = React.createClass({
 				);
 			}
 			//判断是不是最后一个，然后给对应的样式，让最后一个菜类能撑满
-			if( i == allDish.length-1 ){
-				styleObj = { "min-height":this._suchDom().clientHeight - this._topbarHeight };
+			if( allTc.length == 0 ){
+				if( i == allDish.length-1 ){
+					styleObj = { "minHeight":this._suchDom().clientHeight - this._topbarHeight - this._footerHeight };
+				}
 			}
 			allDishArr.push(
 				<Container className="singleclassName" style={ styleObj }>
@@ -106,6 +110,26 @@ var RightPart = React.createClass({
 				</Container>
 			);
 		}
+		for( var k = 0 ; k < allTc.length ; k++ ){
+			var tcInClass = [];
+			tcInClass.push(
+				<DishclassCell data={ allTc[k] }/>
+			);
+			for( var q = 0 ; q < allTc[k].tcItems.length ; q++ ){
+				tcInClass.push(
+					<TcCell data={ allTc[k].tcItems[q] }/>
+				);
+			}
+			if( k == allTc.length-1 ){
+				styleObj = { "minHeight":this._suchDom().clientHeight - this._topbarHeight - this._footerHeight };
+			}
+			allDishArr.push(
+				<Container className="singleclassName" style={ styleObj }>
+					{tcInClass} 
+				</Container>
+			);
+		}
+
 
 		return (
 			<div id="rightbox" className="right">
@@ -128,7 +152,7 @@ var RightPart = React.createClass({
 		this.setState( { crtClassName:DishStore.getCrtclass().name } );
 		if( DishStore.getCrtActionType() == DishConstants.LFFT_CLICK ){
 			document.getElementById( "rightBoxIn" ).scrollTop = this._wholeDisArr[ DishStore.getCrtclassIndex() ] - this._topbarHeight;
-			console.log( this._wholeDisArr );
+			//console.log( this._wholeDisArr );
 		}
 	
 	},
@@ -139,7 +163,8 @@ var RightPart = React.createClass({
 			clientHeight:document.documentElement.clientHeight
 		}
 	},
-	_topbarHeight:90
+	_topbarHeight:45,
+	_footerHeight:45
 });
 
 module.exports = RightPart;

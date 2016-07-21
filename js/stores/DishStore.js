@@ -8,6 +8,7 @@ var CHANGE_EVENT = "change";
 
 var allDishes = JSON.parse( 
 document.getElementById("dishdata").innerHTML );
+
 var allTc = {};
 if( document.getElementById("tcdata").innerHTML != "" ){
 	allTc = JSON.parse( document.getElementById("tcdata").innerHTML );
@@ -17,7 +18,12 @@ var dishCrtclassIndex = 0;
 var crtActionType = "";
 
 function updateDishCrtclass( action ){
-	dishCrtclass = allDishes.alldish[ action.dishIndex ];
+	if( action.dishIndex < allDishes.alldish.length ){
+		dishCrtclass = allDishes.alldish[ action.dishIndex ];
+	}else{
+		dishCrtclass = allTc.alltc[ action.dishIndex - allDishes.alldish.length ];
+	}
+
 	dishCrtclassIndex = action.dishIndex;
 	crtActionType = action.actionType;
 }

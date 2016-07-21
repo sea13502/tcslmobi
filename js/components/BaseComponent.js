@@ -29,8 +29,8 @@ var BaseComponent = React.createClass({
 					topbar
 				</div>
 				<div id="main">
-					<LeftPart data={allDish} />
-					<RightPart data={allDish} />				
+					<LeftPart data={allDish} tcdata={ allTc } />
+					<RightPart data={allDish} tcdata={ allTc } />				
 				</div>
 				<div style={{ height:"45px" }}>
 					footer
