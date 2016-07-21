@@ -6,6 +6,17 @@ var DishActions = require( "../../actions/DishActions.js" );
 var DishConstants = require( "../../constants/DishConstants.js" );
 var Container = require( "amazeui-touch" ).Container;
 
+//检测图片是不是显示出来了
+function checkDishShow( dishImgGroup,dishes,canHeight ){
+	var scrollTop = document.getElementById("rightBoxIn").scrollTop;
+	for( var i = 0 ; i < dishes.length ; i++ ){
+		if( dishes[i] - 45 > scrollTop && ( scrollTop + canHeight ) > ( dishes[i] - 45 ) ){
+			console.log( dishImgGroup[i] );
+			dishImgGroup[i].setAttribute( "src" , dishImgGroup[i].getAttribute( "data-lazy-src" ) );
+		}
+	}
+	//console.log( dishes );
+}
 
 var RightPart = React.createClass({
 	componentDidMount:function(){
@@ -14,7 +25,6 @@ var RightPart = React.createClass({
 	    DishStore.addChangeListener( this._onChange );
 
 	    var wholeDis = [];
-
 		for( 
 			var i = 0 ;
 			i < document.getElementsByClassName( "singleclassName" ).length ;
@@ -24,8 +34,26 @@ var RightPart = React.createClass({
 				document.getElementsByClassName( "singleclassName" )[i].getBoundingClientRect().top
 			)
 		}
-
 		this._wholeDisArr = wholeDis;
+		//所有的菜品图距离上面的距离
+		var wholedishDis = [];
+		var dishImgGroup = document.getElementsByClassName("dishImg");
+
+		var canHeight = Number( document.getElementById("rightBoxIn").style.height.slice(0,-2) );
+		for(
+			var j = 0 ;
+			j < dishImgGroup.length ;
+			j++
+		){
+			wholedishDis.push(
+				dishImgGroup[j].offsetTop
+			);
+		}
+		var _wholeDishDis = wholedishDis;
+
+		setInterval( function(){
+			checkDishShow( dishImgGroup,_wholeDishDis,canHeight );
+		},1000 );
 	},
 	componentWillMount:function(){
 	    DishStore.removeChangeListener( this._onChange );
