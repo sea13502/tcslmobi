@@ -5,13 +5,14 @@ body{
 #diancaican .left{
 	background: yellow;
     overflow: scroll;
-    display:inline-block;
+    display:block;
+    float:left;
     width: 20%;
 }
 #diancaican .right{
 	background: pink;
     overflow: scroll;
-    display:inline-block;
+    display:block;
     width: 80%;
 }
 #rightBoxIn{

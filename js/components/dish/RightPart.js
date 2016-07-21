@@ -21,7 +21,7 @@ function checkDishShow( dishImgGroup,dishes,canHeight ){
 var RightPart = React.createClass({
 	componentDidMount:function(){
 		document.getElementById( "rightBoxIn" ).style.height = document.documentElement.clientHeight - this._topbarHeight + "px";
-
+		//document.getElementById( "main" ).style.height = document.documentElement.clientHeight - this._topbarHeight + "px";
 	    DishStore.addChangeListener( this._onChange );
 
 	    var wholeDis = [];
@@ -139,7 +139,7 @@ var RightPart = React.createClass({
 			clientHeight:document.documentElement.clientHeight
 		}
 	},
-	_topbarHeight:45
+	_topbarHeight:90
 });
 
 module.exports = RightPart;

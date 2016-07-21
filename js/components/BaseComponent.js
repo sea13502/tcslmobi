@@ -28,9 +28,12 @@ var BaseComponent = React.createClass({
 				<div style={{ height:"45px" }}>
 					topbar
 				</div>
-				<div>
+				<div id="main">
 					<LeftPart data={allDish} />
 					<RightPart data={allDish} />				
+				</div>
+				<div style={{ height:"45px" }}>
+					footer
 				</div>
 			</div>
 		)

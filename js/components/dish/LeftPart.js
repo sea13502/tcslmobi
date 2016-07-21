@@ -5,7 +5,7 @@ var LeftdishClasscell = require( "../../components/dish/LeftdishClasscell.js" );
 
 var LeftPart = React.createClass({
 	componentDidMount:function(){
-		document.getElementById( "leftbox" ).style.height = document.documentElement.clientHeight - 45 + "px";
+		document.getElementById( "leftbox" ).style.height = document.documentElement.clientHeight - 90 + "px";
 	},
 	render:function(){
 		var allDish = this.props.data.alldish;
