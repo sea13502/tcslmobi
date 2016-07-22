@@ -18,8 +18,8 @@ var DishCell = React.createClass({
 					{ data.name }
 				</div>
 				<div>
-					<div onClick={ this.plusAction }>加</div>
-					<div onClick={ this.minusAction }>减</div>
+					<div className="dishbtn" onClick={ this.plusAction }>加</div>
+					<div className="dishbtn" onClick={ this.minusAction }>减</div>
 				</div>
 			</div>
 		)
@@ -27,12 +27,10 @@ var DishCell = React.createClass({
 
 	plusAction:function(){
 		console.log( "plus",this.props.data );
-		alert( this.props.data.itemId );
 	},
 
 	minusAction:function(){
 		console.log( "minus",this.props.data );
-		alert( this.props.data.itemId );
 	}
 
 });

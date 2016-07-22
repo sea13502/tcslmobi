@@ -64,3 +64,8 @@ body{
     display: block;
     clear: both;
 }
+.dishbtn{
+    float:left;
+    background:green;
+    padding: 10px;
+}
