@@ -1,6 +1,6 @@
 var React = require("react");
-//var LazyImage = require('lazyimage');
-//console.log( LazyLoad );
+var SelectedStore = require( "../../stores/SelectedStore.js" );
+
 var DishCell = React.createClass({
 
 	render:function(){

@@ -1,5 +1,4 @@
 var React = require( "react" );
-var BackButton = require( "../../components/BackButton.js" );
 var Container = require( "amazeui-touch" ).Container;
 var LeftdishClasscell = require( "../../components/dish/LeftdishClasscell.js" );
 
@@ -27,7 +26,6 @@ var LeftPart = React.createClass({
 		return (
 			<div id="leftbox" className="left">
 				{ allDishClassArr }
-				<BackButton />
 			</div>
 		)
 	}

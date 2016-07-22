@@ -13,6 +13,13 @@ if( document.getElementById("tcdata").innerHTML != "" ){
 }
 //已选菜品数据
 var selectedDish = {};
+//制造数据结构
+for( var i = 0 ; i < allDishes.alldish.length ; i++ ){
+	selectedDish[ allDishes.alldish[i].itemClassId ] = [];
+}
+for( var j = 0 ; j < allTc.alltc.length ; j++ ){
+	selectedDish[ "tc_" + allTc.alltc[j].tcClassId ] = []
+}
 
 var SelectedStore = assign({},EventEmitter.prototype,{
 

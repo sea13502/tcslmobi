@@ -54,7 +54,7 @@ var RightPart = React.createClass({
 
 		setInterval( function(){
 			checkDishShow( dishImgGroup,_wholeDishDis,canHeight );
-		},1000 );
+		},500 );
 	},
 	componentWillMount:function(){
 	    DishStore.removeChangeListener( this._onChange );
