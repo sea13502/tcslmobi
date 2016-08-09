@@ -9,6 +9,7 @@ module.exports = {
 		,
 		libraryTarget: "umd"
 	},
+	//压缩代码用
 	// plugins:[
 	// 	new webpack.optimize.UglifyJsPlugin({
 	// 		compressor:{
@@ -34,7 +35,9 @@ module.exports = {
   		'react-addons-css-transition-group':
     	['React', 'addons', 'CSSTransitionGroup'],
     	'react-router':'ReactRouter'
-	}
+	},
+	// 下面的这句话可以生成sorcemap，找不到那个文件，但是可以定位错误位置
+	// devtool: 'eval-source-map'
 	// ,
 	// resolve: {
 	//     alias: {
